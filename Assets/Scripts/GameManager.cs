@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
     public int lives;
     public GameObject startCanvas;
     public GameObject mainCamera;
-    public bool gameStarted;
+    public static bool gameStarted;
     public float cameraSpeed;
 
     // Start is called before the first frame update

@@ -8,13 +8,14 @@ public class GridLooper : MonoBehaviour
     public float backgroundSpeed;
     public Renderer backgroundRenderer;
     public bool panUp;
+    public bool gameBegan;
 
     // Update is called once per frame
     void Update()
     {
         if (panUp && transform.localPosition.y < 15f) {
             transform.position += new Vector3(0, backgroundSpeed * Time.deltaTime, 0);
-        } else if (transform.localPosition.y < 15f) {
+        } else if (transform.localPosition.y < 15f && GameManager.gameStarted) {
             backgroundRenderer.material.mainTextureOffset -= new Vector2(0, backgroundSpeed * Time.deltaTime);
         }
     }
