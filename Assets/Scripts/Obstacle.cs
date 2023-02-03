@@ -4,16 +4,11 @@ using UnityEngine;
 
 public class Obstacle : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
+    public AudioClip ouchieClip;
 
     private void OnTriggerEnter2D(Collider2D other) {
         if (other.tag == "Root") {
-            //Get hit ouchie
+            AudioSource.PlayClipAtPoint(ouchieClip, Camera.main.transform.position);
         } else if (other.tag == "Border") {
             Destroy(this.gameObject);
         }
