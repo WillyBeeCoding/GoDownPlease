@@ -18,7 +18,9 @@ public class PlayerBehaviour : MonoBehaviour
     Vector2 lastNode;
     public GameObject rootTrail;
     public GameObject trailHolder;
+
     float trailPos;
+    Vector2 prevPosition;
 
     // Start is called before the first frame update
     void Start()
@@ -27,35 +29,37 @@ public class PlayerBehaviour : MonoBehaviour
         rb.drag = linearDrag;
 
         lastNode = transform.position;
+        prevPosition = transform.position;
 
     }
-
-    // Update is called once per frame
-    void Update()
+    //KEEP MOVEMENT ON UPDATE FOR RESPONSIVENESS
+    private void Update()
     {
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
         // mouse follow
         Vector2 targ = mousePos - (Vector2)transform.position;
-        rb.AddForce((targ*sensitivity - rb.velocity) * rb.mass);
-
-
-        //Rotation
-        //Vector2 neo = new Vector2(rb.velocity.x,0);
-        Quaternion targRot = Quaternion.FromToRotation(-Vector3.up, rb.velocity);
-        transform.localRotation = Quaternion.Lerp(transform.rotation, targRot, 0.3f);
+        rb.AddForce((targ * sensitivity - rb.velocity) * rb.mass);
 
         //Root trail
-
-        if(Vector3.Distance(lastNode,rb.position) > 0.04f & useObjectTrail)
+        if (Vector3.Distance(lastNode, rb.position) > 0.04f & useObjectTrail)
         {
             GameObject tempTrail = Instantiate(rootTrail);
-            tempTrail.transform.position = trailHolder.transform.position;
-            tempTrail.transform.rotation = trailHolder.transform.rotation;
+            tempTrail.transform.SetPositionAndRotation(trailHolder.transform.position, trailHolder.transform.rotation);
             lastNode = transform.position;
 
         }
+    }
 
+    // KEEP ROTATION ON FIXEDUPDATE FOR ACCURACY
+    void FixedUpdate()
+    {
+        //calculate velocity manually due to parenting
+        Vector2 worldVel = ((Vector2)transform.position - prevPosition);
+        prevPosition = transform.position;
 
+        //Rotation
+        Quaternion targRot = Quaternion.FromToRotation(-Vector3.up, worldVel);
+        transform.localRotation = Quaternion.Lerp(transform.rotation, targRot, 0.3f);
     }
 }
