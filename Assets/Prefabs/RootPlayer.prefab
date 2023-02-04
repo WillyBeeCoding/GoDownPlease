@@ -233,8 +233,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startPos: {x: 0, y: 0}
-  followStr: 3
-  linearDrag: 20
+  followStr: 20
+  linearDrag: 3
   useObjectTrail: 0
   useRenderTrail: 1
   rootTrail: {fileID: 1828382316074811456, guid: cc7c5d6704fcd9a42a58a7de3a443a55, type: 3}
@@ -346,4 +346,4 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
-  m_Constraints: 2
+  m_Constraints: 4

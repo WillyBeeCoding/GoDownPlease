@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class SpawnObstacles : MonoBehaviour
 {
-    public GameObject obstacle;
+    public List<GameObject> obstacles;
+    public List<Sprite> obstacleSprites;
     public float minX;
     public float maxX;
     public float minY;
@@ -16,16 +17,27 @@ public class SpawnObstacles : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Time.time > spawnTime) {
-            Spawn();
-            spawnTime = Time.time + timeBetweenSpawn;
+        if(GameManager.Instance.CompareState(GameState.Gameplay)){
+            if (Time.time > spawnTime) {
+                Spawn();
+                spawnTime = Time.time + timeBetweenSpawn;
+            }
         }
     }
 
     public void Spawn() {
+
+        SpawnObstacle();
+
+    }
+
+    private void SpawnObstacle()
+    {
         float randomX = Random.Range(minX, maxX);
         float randomY = Random.Range(minY, maxY);
 
-        Instantiate(obstacle, transform.position + new Vector3(randomX, randomY, 0), transform.rotation);
+        Vector2 spawnPos = transform.position + new Vector3(randomX, randomY, 0);
+        Quaternion spawnRot = Quaternion.Euler(0, 0, Random.Range(0, 360));
+        GameObject newObstacle = Instantiate(obstacles[Random.Range(0,obstacles.Count)], spawnPos , spawnRot);
     }
 }
