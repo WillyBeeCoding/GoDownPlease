@@ -6,8 +6,8 @@ using UnityEngine.Tilemaps;
 public class PlayerBehaviour : MonoBehaviour
 {
     public Vector2 startPos;
-    public float followStr = 3f;
-    public float linearDrag = 20.0f;
+    public float followStr = 12f;
+    public float linearDrag = 10.0f;
     public bool useObjectTrail = false;
     public bool useRenderTrail = true;
 
@@ -35,14 +35,6 @@ public class PlayerBehaviour : MonoBehaviour
     {
         
 
-        //Root trail
-        if (Vector3.Distance(lastNode, rb.position) > 0.04f & useObjectTrail)
-        {
-            GameObject tempTrail = Instantiate(rootTrail);
-            tempTrail.transform.SetPositionAndRotation(trailHolder.transform.position, trailHolder.transform.rotation);
-            lastNode = transform.position;
-
-        }
     }
 
     // KEEP ROTATION ON FIXEDUPDATE FOR ACCURACY
@@ -63,6 +55,6 @@ public class PlayerBehaviour : MonoBehaviour
 
         //Rotation
         Quaternion targRot = Quaternion.FromToRotation(-Vector3.up, worldVel);
-        transform.rotation = Quaternion.Lerp(transform.rotation, targRot, 0.3f);
+        //transform.rotation = Quaternion.Lerp(transform.rotation, targRot, 1f);
     }
 }

@@ -54,7 +54,10 @@ public class Resources : MonoBehaviour
     {
 
     }
-    
+    public void DrinkWater(float amount)
+    {
+
+    }
     public void MakeThirsty()
     {
         Mathf.Clamp(water -= waterLoss,0,waterMax);

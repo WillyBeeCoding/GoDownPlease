@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
     
     public static GameManager Instance;  
     public GameState gameState;
+    public GameObject playerRoot;
 
     static public int currentScore;
     static public int highScore;
@@ -72,7 +73,9 @@ public class GameManager : MonoBehaviour
             case GameState.MainMenu: //set when we are in the main menu
                 FadeInMenu();
                 break;
-            case GameState.Gameplay: // set when we are playing the game actively
+            case GameState.Gameplay: // set when we start playing the game actively
+                SpawnPlayerWithForce(new Vector2(0,0), new Vector2(0,-1), 100);
+                //SpawnPlayerWithForce(Vector2 pos, Vector2 dir, float mag);
                 FadeOutMenu();
                 break;
             case GameState.GameOver: // set on death
@@ -85,6 +88,28 @@ public class GameManager : MonoBehaviour
 
         //ChangeGameState?.Invoke(state); 
         //was going to try to do invokes for state changes, but thats too complicated right now
+    }
+
+    private GameObject SpawnPlayer(Vector2 pos, bool isActive)
+    {
+        GameObject temp = Instantiate(playerRoot, transform, false);
+        temp.SetActive(isActive);
+        try
+        {
+            temp.GetComponentInChildren<TrailRenderer>(true).emitting = true;
+        }
+        catch (Exception e) { Debug.LogError("You ain't got no trail dummy ------ " + e); }
+        return temp;
+
+    }
+    
+    private GameObject SpawnPlayerWithForce(Vector2 pos, Vector2 dir, float mag)
+    {
+        GameObject temp = SpawnPlayer(pos, true);
+        temp.GetComponent<Rigidbody2D>().AddForce(dir * mag);
+        return temp;
+        
+
     }
 
     //a quicker way to check if we are in a state instead of using actions.
@@ -169,5 +194,7 @@ public class GameManager : MonoBehaviour
         waterSign = GameObject.Find("Water Sign");
         waterGauge = GameObject.Find("Water Gauge");
     }
+
+    
 
 }
