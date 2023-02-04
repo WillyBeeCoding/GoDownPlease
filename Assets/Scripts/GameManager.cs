@@ -2,15 +2,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.Experimental.GraphView.GraphView;
-using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public enum GameState
 {
     MainMenu,
     Gameplay,
     GameOver,
-    Scoreboard
+    Scoreboard,
+    Options
 }
 
 public class GameManager : MonoBehaviour
@@ -19,9 +18,20 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;  
     public GameState gameState;
 
-    static public int score;
+    static public int currentScore;
+    static public int highScore;
     public int lives;
+
     public GameObject startCanvas;
+    public GameObject overlayCanvas;
+
+    private GameObject dividingBar;
+    private GameObject distanceSign;
+    private GameObject healthSign;
+    private GameObject healthGauge;
+    private GameObject waterSign;
+    private GameObject waterGauge;
+
     public GameObject mainCamera;
     public Resources resources;
     public bool gameStarted;
@@ -31,9 +41,10 @@ public class GameManager : MonoBehaviour
     {
         Instance = this;
     }
-    // Start is called before the first frame update
+
     void Start()
     {
+        FindUIAssets();
         UpdateGameState(GameState.MainMenu);  //calls the function ones
         resources = Resources.Instance;
     }
@@ -48,6 +59,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // Wrapper for the unity editor to understand lol
+    public void UpdateGameState(int state) {
+        UpdateGameState((GameState) state);
+    }
+
     public void UpdateGameState(GameState state)
     {
         Instance.gameState = state;
@@ -57,6 +73,7 @@ public class GameManager : MonoBehaviour
                 FadeInMenu();
                 break;
             case GameState.Gameplay: // set when we are playing the game actively
+                FadeOutMenu();
                 break;
             case GameState.GameOver: // set on death
                 break;
@@ -87,6 +104,11 @@ public class GameManager : MonoBehaviour
         StartCoroutine(FadeOutMenuAnim());
     }
 
+    public void FadeInOverlay()
+    {
+        StartCoroutine(FadeOutMenuAnim());
+    }
+
     private IEnumerator FadeInMenuAnim()
     {
         yield return new WaitForEndOfFrame();
@@ -106,7 +128,46 @@ public class GameManager : MonoBehaviour
             mainCamera.GetComponent<Camera>().orthographicSize = flt;
         });
         yield return new WaitForSeconds(1f);
-        UpdateGameState(GameState.Gameplay);
+        StartCoroutine(FadeInOverlayAnim());
+        // UpdateGameState(GameState.Gameplay);
+    }
+
+    private IEnumerator FadeInOverlayAnim()
+    {
+        yield return new WaitForEndOfFrame();
+
+        // Collects children of the Canvas
+        List<GameObject> overlayParts = new List<GameObject>();
+        foreach (Transform child in overlayCanvas.transform) { overlayParts.Add(child.gameObject); }
+        
+        // Fades in the Overlay Canvas
+        LeanTween.alphaCanvas(overlayCanvas.GetComponent<CanvasGroup>(), 1f, 0.2f);
+
+        // Expands the divider bar
+        Vector2 oldDelta = dividingBar.GetComponent<RectTransform>().sizeDelta;
+        LeanTween.value(dividingBar, oldDelta.x, 750f, 1f).setEaseOutQuad().setOnUpdate((float flt) => {
+            dividingBar.GetComponent<RectTransform>().sizeDelta = new Vector2(flt,  oldDelta.y);
+        });
+
+        // Pans up all the signs
+        yield return new WaitForSeconds(0.5f);
+        LeanTween.moveLocalY(distanceSign, -20f, 0.7f).setEaseOutExpo();
+        yield return new WaitForSeconds(0.3f);
+        LeanTween.moveLocalY(waterSign, -20f, 0.7f).setEaseOutExpo();
+        LeanTween.moveLocalY(healthSign, -20f, 0.7f).setEaseOutExpo();
+        yield return new WaitForSeconds(0.8f);
+        LeanTween.moveLocalX(waterGauge, -0f, 1f).setEaseOutBounce();
+        LeanTween.moveLocalX(healthGauge, -0f, 1f).setEaseOutBounce();
+
+    }
+
+    private void FindUIAssets() {
+        dividingBar = GameObject.Find("Dividing Bar");
+        distanceSign = GameObject.Find("Distance Sign");
+        healthSign = GameObject.Find("Health Sign");
+        healthGauge = GameObject.Find("Health Gauge");
+        waterSign = GameObject.Find("Water Sign");
+        waterGauge = GameObject.Find("Water Gauge");
     }
 
 }
