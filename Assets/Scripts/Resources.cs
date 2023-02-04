@@ -13,7 +13,7 @@ public class Resources : MonoBehaviour
         get { return _health; }
         set{
             _health = Mathf.Clamp(value, 0, 3);
-            //GameManager.Instance.AdjustHealthUI(); //TODO: unedit
+            GameManager.Instance.AdjustHealthUI();
         }
 
     }
@@ -24,7 +24,7 @@ public class Resources : MonoBehaviour
         get { return _water; }
         set{
             _water = Mathf.Clamp(value, 0, waterMax);
-            //GameManager.Instance.AdjustHealthUI();  //TODO: unedit
+            GameManager.Instance.AdjustWaterUI();
         }
     }
 
@@ -101,7 +101,7 @@ public class Resources : MonoBehaviour
     }
     void OnDeath()
     {
-        //TODO: do death things
+        StartCoroutine(GameManager.Instance.FadeInGameOver());
         Debug.Break();
     }
 }
