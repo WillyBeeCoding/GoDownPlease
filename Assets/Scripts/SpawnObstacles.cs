@@ -13,11 +13,11 @@ public class SpawnObstacles : MonoBehaviour
 
     public float timeBetweenSpawn;
     private float spawnTime;
-
+    public bool canSpawn = true;
     // Update is called once per frame
     void Update()
     {
-        if(GameManager.Instance.CompareState(GameState.Gameplay)){
+        if(GameManager.Instance.CompareState(GameState.Gameplay) & canSpawn){
             if (Time.time > spawnTime) {
                 Spawn();
                 spawnTime = Time.time + timeBetweenSpawn;

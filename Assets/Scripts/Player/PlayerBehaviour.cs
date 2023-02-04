@@ -10,13 +10,13 @@ public class PlayerBehaviour : MonoBehaviour
     public float linearDrag = 10.0f;
     public bool useObjectTrail = false;
     public bool useRenderTrail = true;
+    public float wobble;
+    public float wobbleMax = 5; //TODO: Smooth this out
 
     Rigidbody2D rb;
-    Vector2 lastNode;
     public GameObject rootTrail;
     public GameObject trailHolder;
 
-    float trailPos;
     Vector2 prevPosition;
 
     // Start is called before the first frame update
@@ -25,7 +25,6 @@ public class PlayerBehaviour : MonoBehaviour
         rb = gameObject.GetComponent<Rigidbody2D>();
         rb.drag = linearDrag;
 
-        lastNode = transform.position;
         prevPosition = transform.position;
         
 
@@ -44,10 +43,11 @@ public class PlayerBehaviour : MonoBehaviour
         Vector2 worldVel = ((Vector2)transform.position - prevPosition);
         prevPosition = transform.position;
 
+        wobble = Resources.Instance.GetParchedAmount() * wobbleMax; //weebls wobble TODO: Smooth this out
 
         //create temp vec to lock mouse at Y and still retain physics
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector2 tempVec = new(mousePos.x, transform.parent.transform.position.y);
+        Vector2 tempVec = new(mousePos.x + Random.Range(-wobble, wobble), transform.parent.transform.position.y);
         // mouse follow
         Vector2 targ = tempVec - (Vector2)transform.position;
         rb.AddForce((targ * followStr - worldVel) * rb.mass);
@@ -55,6 +55,6 @@ public class PlayerBehaviour : MonoBehaviour
 
         //Rotation
         Quaternion targRot = Quaternion.FromToRotation(-Vector3.up, worldVel);
-        //transform.rotation = Quaternion.Lerp(transform.rotation, targRot, 1f);
+        transform.rotation = Quaternion.Lerp(transform.rotation, targRot, 1f);
     }
 }
