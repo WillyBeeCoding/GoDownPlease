@@ -6,10 +6,8 @@ using UnityEngine.Tilemaps;
 public class PlayerBehaviour : MonoBehaviour
 {
     public Vector2 startPos;
-    public float speed; //unused
-    public float followStr = 2.5f;
-    public float linearDrag = 20;
-    public float centerPos;//unused
+    public float followStr = 3f;
+    public float linearDrag = 20.0f;
     public bool useObjectTrail = false;
     public bool useRenderTrail = true;
 
@@ -29,17 +27,13 @@ public class PlayerBehaviour : MonoBehaviour
 
         lastNode = transform.position;
         prevPosition = transform.position;
-        rb.freezeRotation = true;
+        
 
     }
     //KEEP MOVEMENT ON UPDATE FOR RESPONSIVENESS
     private void Update()
     {
-        Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector2 tempVec = new Vector2(mousePos.x, transform.parent.position.y);
-        // mouse follow
-        Vector2 targ = tempVec - (Vector2)transform.position;
-        rb.AddForce((targ * followStr - rb.velocity) * rb.mass);
+        
 
         //Root trail
         if (Vector3.Distance(lastNode, rb.position) > 0.04f & useObjectTrail)
@@ -58,8 +52,17 @@ public class PlayerBehaviour : MonoBehaviour
         Vector2 worldVel = ((Vector2)transform.position - prevPosition);
         prevPosition = transform.position;
 
+
+        //create temp vec to lock mouse at Y and still retain physics
+        Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 tempVec = new(mousePos.x, transform.parent.transform.position.y);
+        // mouse follow
+        Vector2 targ = tempVec - (Vector2)transform.position;
+        rb.AddForce((targ * followStr - worldVel) * rb.mass);
+
+
         //Rotation
         Quaternion targRot = Quaternion.FromToRotation(-Vector3.up, worldVel);
-        transform.localRotation = Quaternion.Lerp(transform.rotation, targRot, 0.3f);
+        transform.rotation = Quaternion.Lerp(transform.rotation, targRot, 0.3f);
     }
 }

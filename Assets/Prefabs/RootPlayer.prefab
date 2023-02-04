@@ -194,7 +194,6 @@ GameObject:
   m_Component:
   - component: {fileID: 9143396228744898728}
   - component: {fileID: 3747250072461186000}
-  - component: {fileID: 5372825046286020712}
   - component: {fileID: 5764554774599480307}
   - component: {fileID: 258608263472821439}
   - component: {fileID: 3943260790017478198}
@@ -234,33 +233,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startPos: {x: 0, y: 0}
-  speed: 0
-  followStr: 2.5
-  linearDrag: 4
-  centerPos: 0
+  followStr: 3
+  linearDrag: 20
   useObjectTrail: 0
   useRenderTrail: 1
   rootTrail: {fileID: 1828382316074811456, guid: cc7c5d6704fcd9a42a58a7de3a443a55, type: 3}
   trailHolder: {fileID: 5337661945835635435}
---- !u!114 &5372825046286020712
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7592978597782775136}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be005787f3d82a14ea585bc04fd7f6a9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  health: 3
-  waterMax: 100
-  water: 0
-  waterLoss: 1
-  waterLossTime: 0.2
-  parchedPercent: 0
-  stunDuration: 2
 --- !u!212 &5764554774599480307
 SpriteRenderer:
   m_ObjectHideFlags: 0

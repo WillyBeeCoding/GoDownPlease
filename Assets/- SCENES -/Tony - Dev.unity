@@ -6158,6 +6158,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2078255047}
     m_Modifications:
+    - target: {fileID: 3747250072461186000, guid: 6380efe7989b9cb40964c9b49393d222, type: 3}
+      propertyPath: followStr
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3943260790017478198, guid: 6380efe7989b9cb40964c9b49393d222, type: 3}
+      propertyPath: m_Constraints
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 7592978597782775136, guid: 6380efe7989b9cb40964c9b49393d222, type: 3}
       propertyPath: m_Name
       value: RootPlayer
@@ -10479,6 +10487,10 @@ PrefabInstance:
       propertyPath: m_Tiles.Array.data[129].second.m_TileColorIndex
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4356091026479600227, guid: 809f75c402e955642a6b99502339ad46, type: 3}
+      propertyPath: backgroundSpeed
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 4356091026479600239, guid: 809f75c402e955642a6b99502339ad46, type: 3}
       propertyPath: m_Name
       value: Ground Tilemap 2 - Deep Dirt
@@ -12576,6 +12588,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2078255047}
   - component: {fileID: 2078255046}
+  - component: {fileID: 2078255048}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -12595,11 +12608,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 810bf94b1e7627941b4ba6b515f3c40c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  score: 0
+  gameState: 0
   lives: 0
   startCanvas: {fileID: 1019326856}
   mainCamera: {fileID: 519420028}
-  cameraSpeed: 3
+  resources: {fileID: 0}
+  gameStarted: 0
+  cameraSpeed: 10
 --- !u!4 &2078255047
 Transform:
   m_ObjectHideFlags: 0
@@ -12622,6 +12637,26 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2078255048
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2078255045}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be005787f3d82a14ea585bc04fd7f6a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 3
+  waterMax: 100
+  waterLow: 0
+  water: 0
+  waterLoss: 1
+  waterLossTime: 0.33
+  parchedPercent: 0
+  stunDuration: 2
 --- !u!1 &2141367655
 GameObject:
   m_ObjectHideFlags: 0

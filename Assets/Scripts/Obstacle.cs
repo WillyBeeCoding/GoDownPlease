@@ -4,12 +4,15 @@ using UnityEngine;
 
 public class Obstacle : MonoBehaviour
 {
+    public int damage = 1;
     public AudioClip ouchieClip;
 
     private void OnTriggerEnter2D(Collider2D other) {
-        if (other.tag == "Root") {
+        if (other.CompareTag("Player")) {
             AudioSource.PlayClipAtPoint(ouchieClip, Camera.main.transform.position);
-        } else if (other.tag == "Border") {
+            Resources.Instance.ApplyDamage(damage);
+
+        } else if (other.CompareTag("Border")) {
             Destroy(this.gameObject);
         }
     }
