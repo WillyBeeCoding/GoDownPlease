@@ -33,6 +33,8 @@ public class GameManager : MonoBehaviour
     private GameObject waterSign;
     private GameObject waterGauge;
 
+    public GridLooper initialGridLoop;
+
     public GameObject mainCamera;
     public Resources resources;
     public bool gameStarted;
@@ -76,7 +78,6 @@ public class GameManager : MonoBehaviour
             case GameState.Gameplay: // set when we start playing the game actively
                 SpawnPlayerWithForce(new Vector2(0,0), new Vector2(0,-1), 100);
                 //SpawnPlayerWithForce(Vector2 pos, Vector2 dir, float mag);
-                FadeOutMenu();
                 break;
             case GameState.GameOver: // set on death
                 break;
@@ -100,7 +101,6 @@ public class GameManager : MonoBehaviour
         }
         catch (Exception e) { Debug.LogError("You ain't got no trail dummy ------ " + e); }
         return temp;
-
     }
     
     private GameObject SpawnPlayerWithForce(Vector2 pos, Vector2 dir, float mag)
@@ -108,8 +108,16 @@ public class GameManager : MonoBehaviour
         GameObject temp = SpawnPlayer(pos, true);
         temp.GetComponent<Rigidbody2D>().AddForce(dir * mag);
         return temp;
-        
+    }
 
+    public void AdjustWaterUI() {
+        float position = -146f * (1f - (Resources.Instance.water / 100f));
+        LeanTween.moveLocalX(waterGauge, position, 0.5f).setEaseOutQuad();
+    }
+
+    public void AdjustHealthUI() {
+        float position = -146f * (1f - (Resources.Instance.health / 3f));
+        LeanTween.moveLocalX(healthGauge, position, 0.5f).setEaseOutQuad();
     }
 
     //a quicker way to check if we are in a state instead of using actions.
@@ -125,11 +133,6 @@ public class GameManager : MonoBehaviour
     }
 
     public void FadeOutMenu()
-    {
-        StartCoroutine(FadeOutMenuAnim());
-    }
-
-    public void FadeInOverlay()
     {
         StartCoroutine(FadeOutMenuAnim());
     }
@@ -181,9 +184,54 @@ public class GameManager : MonoBehaviour
         LeanTween.moveLocalY(waterSign, -20f, 0.7f).setEaseOutExpo();
         LeanTween.moveLocalY(healthSign, -20f, 0.7f).setEaseOutExpo();
         yield return new WaitForSeconds(0.8f);
-        LeanTween.moveLocalX(waterGauge, -0f, 1f).setEaseOutBounce();
-        LeanTween.moveLocalX(healthGauge, -0f, 1f).setEaseOutBounce();
+        LeanTween.moveLocalX(waterGauge, 0f, 1f).setEaseOutBounce();
+        LeanTween.moveLocalX(healthGauge, 0f, 1f).setEaseOutBounce();
 
+        // Starts moving the grid
+        StartUpGrid();
+        yield return new WaitForSeconds(1f);
+        UpdateGameState(GameState.Gameplay);
+    }
+
+    public IEnumerator FadeInGameOver()
+    {
+        yield return new WaitForEndOfFrame();
+
+        // Collects children of the Canvas
+        List<GameObject> overlayParts = new List<GameObject>();
+        foreach (Transform child in overlayCanvas.transform) { overlayParts.Add(child.gameObject); }
+        
+        // Fades in the Overlay Canvas
+        LeanTween.alphaCanvas(overlayCanvas.GetComponent<CanvasGroup>(), 1f, 0.2f);
+
+        // Expands the divider bar
+        Vector2 oldDelta = dividingBar.GetComponent<RectTransform>().sizeDelta;
+        LeanTween.value(dividingBar, oldDelta.x, 750f, 1f).setEaseOutQuad().setOnUpdate((float flt) => {
+            dividingBar.GetComponent<RectTransform>().sizeDelta = new Vector2(flt,  oldDelta.y);
+        });
+
+        // Pans up all the signs
+        yield return new WaitForSeconds(0.5f);
+        LeanTween.moveLocalY(distanceSign, -20f, 0.7f).setEaseOutExpo();
+        yield return new WaitForSeconds(0.3f);
+        LeanTween.moveLocalY(waterSign, -20f, 0.7f).setEaseOutExpo();
+        LeanTween.moveLocalY(healthSign, -20f, 0.7f).setEaseOutExpo();
+        yield return new WaitForSeconds(0.8f);
+        LeanTween.moveLocalX(waterGauge, 0f, 1f).setEaseOutBounce();
+        LeanTween.moveLocalX(healthGauge, 0f, 1f).setEaseOutBounce();
+
+        // Starts moving the grid
+        StartUpGrid();
+        yield return new WaitForSeconds(1f);
+        UpdateGameState(GameState.GameOver);
+    }
+
+    
+
+    private void StartUpGrid() {
+        LeanTween.value(initialGridLoop.gameObject, initialGridLoop.backgroundSpeed, 3f, 5f).setEaseInOutQuad().setOnUpdate((float flt) => {
+            initialGridLoop.backgroundSpeed = flt;
+        });
     }
 
     private void FindUIAssets() {

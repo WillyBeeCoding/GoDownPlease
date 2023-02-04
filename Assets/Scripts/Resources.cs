@@ -62,6 +62,7 @@ public class Resources : MonoBehaviour
     {
         Mathf.Clamp(water -= waterLoss,0,waterMax);
         Debug.Log("Water: " + water);
+        GameManager.Instance.AdjustWaterUI();
         if(water <= 0) {
             OnDeath();
         }
@@ -69,6 +70,7 @@ public class Resources : MonoBehaviour
     public void ApplyDamage(int damage)
     {
         health -= damage;
+        GameManager.Instance.AdjustHealthUI();
         if (health <= 0)
         {
             OnDeath();
@@ -76,7 +78,7 @@ public class Resources : MonoBehaviour
     }
     void OnDeath()
     {
-        //TODO: do death things
+        StartCoroutine(GameManager.Instance.FadeInGameOver());
         Debug.Break();
     }
 }
