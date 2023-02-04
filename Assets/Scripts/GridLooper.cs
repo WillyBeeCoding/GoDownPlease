@@ -15,9 +15,16 @@ public class GridLooper : MonoBehaviour
     {
         if (panUp && transform.localPosition.y < 15f) {
             transform.position += new Vector3(0, backgroundSpeed * Time.deltaTime, 0);
-        } else if (transform.localPosition.y < 15f && GameManager.gameStarted) {
+        } else if (transform.localPosition.y < 15f && GameManager.Instance.CompareState(GameState.Gameplay)) {
             backgroundRenderer.material.mainTextureOffset -= new Vector2(0, backgroundSpeed * Time.deltaTime);
         }
+    }
+
+    public void NewGame()
+    {
+        transform.localPosition = new Vector2(0, 0);
+        panUp = false;
+        GameManager.Instance.UpdateGameState(GameState.MainMenu);
     }
 
 }
