@@ -111,13 +111,17 @@ public class GameManager : MonoBehaviour
     }
 
     public void AdjustWaterUI() {
-        float position = -146f * (1f - (Resources.Instance.water / 100f));
-        LeanTween.moveLocalX(waterGauge, position, 0.5f).setEaseOutQuad();
+        if (GameManager.Instance.gameState == GameState.Gameplay) {
+            float position = -146f * (1f - (Resources.Instance.Water / 100f));
+            LeanTween.moveLocalX(waterGauge, position, 0.5f).setEaseOutQuad();
+        }
     }
 
     public void AdjustHealthUI() {
-        float position = -146f * (1f - (Resources.Instance.health / 3f));
-        LeanTween.moveLocalX(healthGauge, position, 0.5f).setEaseOutQuad();
+        if (GameManager.Instance.gameState == GameState.Gameplay) {
+            float position = -146f * (1f - (Resources.Instance.Health / 3f));
+            LeanTween.moveLocalX(healthGauge, position, 0.5f).setEaseOutQuad();
+        }
     }
 
     //a quicker way to check if we are in a state instead of using actions.

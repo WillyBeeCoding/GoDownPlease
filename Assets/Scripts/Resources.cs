@@ -15,7 +15,6 @@ public class Resources : MonoBehaviour
             _health = Mathf.Clamp(value, 0, 3);
             GameManager.Instance.AdjustHealthUI();
         }
-
     }
 
     //Update the UI whenever water is set
@@ -45,6 +44,7 @@ public class Resources : MonoBehaviour
     void Start()
     {
         Water = waterMax;
+        Health = GameManager.Instance.lives;
         waterLow = waterMax / 2;
         
     }

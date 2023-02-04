@@ -11282,6 +11282,7 @@ MonoBehaviour:
   minY: 3
   maxY: 3.5
   timeBetweenSpawn: 0.5
+  canSpawn: 1
 --- !u!1 &1899601849
 GameObject:
   m_ObjectHideFlags: 0
@@ -12639,7 +12640,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameState: 0
   playerRoot: {fileID: 7592978597782775136, guid: 6380efe7989b9cb40964c9b49393d222, type: 3}
-  lives: 0
+  lives: 3
   startCanvas: {fileID: 1071581228}
   overlayCanvas: {fileID: 299125704}
   initialGridLoop: {fileID: 2035664749}
@@ -12680,10 +12681,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be005787f3d82a14ea585bc04fd7f6a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 3
   waterMax: 100
-  waterLow: 0
-  water: 0
   waterLoss: 1
   waterLossTime: 0.33
   parchedPercent: 0
