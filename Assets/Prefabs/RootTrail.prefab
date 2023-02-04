@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5869249980712963526}
   - component: {fileID: 5873361193344503736}
   m_Layer: 0
-  m_Name: Root Trail
+  m_Name: RootTrail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

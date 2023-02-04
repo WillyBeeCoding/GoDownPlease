@@ -5,11 +5,10 @@ using UnityEngine.Tilemaps;
 
 public class PlayerBehaviour : MonoBehaviour
 {
-
     public Vector2 startPos;
     public float speed; //unused
-    public float sensitivity = 25;
-    public float linearDrag = 4;
+    public float followStr = 2.5f;
+    public float linearDrag = 20;
     public float centerPos;//unused
     public bool useObjectTrail = false;
     public bool useRenderTrail = true;
@@ -30,16 +29,17 @@ public class PlayerBehaviour : MonoBehaviour
 
         lastNode = transform.position;
         prevPosition = transform.position;
+        rb.freezeRotation = true;
 
     }
     //KEEP MOVEMENT ON UPDATE FOR RESPONSIVENESS
     private void Update()
     {
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
+        Vector2 tempVec = new Vector2(mousePos.x, transform.parent.position.y);
         // mouse follow
-        Vector2 targ = mousePos - (Vector2)transform.position;
-        rb.AddForce((targ * sensitivity - rb.velocity) * rb.mass);
+        Vector2 targ = tempVec - (Vector2)transform.position;
+        rb.AddForce((targ * followStr - rb.velocity) * rb.mass);
 
         //Root trail
         if (Vector3.Distance(lastNode, rb.position) > 0.04f & useObjectTrail)

@@ -183,7 +183,7 @@ TrailRenderer:
     generateLightingData: 0
   m_MinVertexDistance: 0.1
   m_Autodestruct: 0
-  m_Emitting: 0
+  m_Emitting: 1
 --- !u!1 &7592978597782775136
 GameObject:
   m_ObjectHideFlags: 0
@@ -193,13 +193,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9143396228744898728}
+  - component: {fileID: 3747250072461186000}
+  - component: {fileID: 5372825046286020712}
   - component: {fileID: 5764554774599480307}
   - component: {fileID: 258608263472821439}
   - component: {fileID: 3943260790017478198}
-  - component: {fileID: 3747250072461186000}
   m_Layer: 0
-  m_Name: Root
-  m_TagString: Untagged
+  m_Name: RootPlayer
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -220,6 +221,46 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
+--- !u!114 &3747250072461186000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7592978597782775136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b257ff85fa6eb744b6bfe1a7df1f8d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startPos: {x: 0, y: 0}
+  speed: 0
+  followStr: 2.5
+  linearDrag: 4
+  centerPos: 0
+  useObjectTrail: 0
+  useRenderTrail: 1
+  rootTrail: {fileID: 1828382316074811456, guid: cc7c5d6704fcd9a42a58a7de3a443a55, type: 3}
+  trailHolder: {fileID: 5337661945835635435}
+--- !u!114 &5372825046286020712
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7592978597782775136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be005787f3d82a14ea585bc04fd7f6a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 3
+  waterMax: 100
+  water: 0
+  waterLoss: 1
+  waterLossTime: 0.2
+  parchedPercent: 0
+  stunDuration: 2
 --- !u!212 &5764554774599480307
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -328,24 +369,3 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 2
---- !u!114 &3747250072461186000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7592978597782775136}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b257ff85fa6eb744b6bfe1a7df1f8d1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  startPos: {x: 0, y: 0}
-  speed: 0
-  sensitivity: 25
-  linearDrag: 4
-  centerPos: 0
-  useObjectTrail: 0
-  useRenderTrail: 1
-  rootTrail: {fileID: 1828382316074811456, guid: cc7c5d6704fcd9a42a58a7de3a443a55, type: 3}
-  trailHolder: {fileID: 5337661945835635435}
