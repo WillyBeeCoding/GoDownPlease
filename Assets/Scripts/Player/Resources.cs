@@ -46,16 +46,15 @@ public class Resources : MonoBehaviour
         
     }
 
-    void MakeThirsty(float loss)
-    {
+    void MakeThirsty(float loss) {
         water -= loss;
         Debug.Log("Water: " + water);
         if(water <= 0) {
             OnDeath();
         }
     }
-    void ApplyDamage(int damage)
-    {
+
+    void ApplyDamage(int damage) {
         health -= damage;
         if (health <= 0)
         {
