@@ -75,8 +75,9 @@ public class GameManager : MonoBehaviour
         if (CompareState(GameState.Gameplay))
         {
             transform.position += new Vector3(0, -cameraSpeed * Time.deltaTime, 0);
-            currentScore += (Time.deltaTime*33.3f);
-            scoreDelta += (Time.deltaTime * 33.3f);
+            float delta = (Time.deltaTime * 33.3f);
+            currentScore += delta;
+            scoreDelta += delta;
             overlayCanvas.GetComponentInChildren<TextMeshProUGUI>().text = ((int)currentScore).ToString();
             CheckDepthLayer();
         }
@@ -115,6 +116,7 @@ public class GameManager : MonoBehaviour
     {
         SpawnPlayer(new Vector2(0, 0), true);
         currentScore = 0;
+        scoreDelta = 0;
     }
     private GameObject SpawnPlayer(Vector2 pos, bool isActive)
     {
@@ -128,12 +130,6 @@ public class GameManager : MonoBehaviour
         return temp;
     }
     
-    // private GameObject SpawnPlayerWithForce(Vector2 pos, Vector2 dir, float mag)
-    // {
-    //     GameObject temp = SpawnPlayer(pos, true);
-    //     temp.GetComponent<Rigidbody2D>().AddForce(dir * mag);
-    //     return temp;
-    // }
     public void SetScoreValues()
     {
         highScore = currentScore > highScore ? (int)currentScore : highScore;
@@ -143,29 +139,41 @@ public class GameManager : MonoBehaviour
 
     public void CheckDepthLayer()
     {
-        // this method is a one shot check based on depth in that layer
-        // and is much more elegant
-        //float layerDepth = currentScore;
-        //int curLayer = Mathf.FloorToInt(currentScore / 1000);
-        //if(layerDepth >= 1000)
-        //{
-        //    depthLayers[curLayer - 1].GetComponent<GridLooper>().panUp = true;
-        //    layerDepth = 0;
-        //}
 
         int curLayer = Mathf.FloorToInt(currentScore / layerThreshold);
 
         if (scoreDelta >= layerThreshold && curLayer <= depthLayers.Count-1) { 
-            if (depthLayers[curLayer - 1].GetComponent<GridLooper>().panUp == false)
+            if (depthLayers[Mathf.Clamp(curLayer - 1, 0, depthLayers.Count-1)].GetComponent<GridLooper>().panUp == false)
             {
-                depthLayers[curLayer - 1].GetComponent<GridLooper>().panUp = true;
+                Debug.LogWarning("CL " + curLayer);
+                switch (curLayer) {
+                    case 1:
+                        LeanTween.value(gameObject, musicTracks[3].volume, 0.1f, 2f).setEaseInQuad().setOnUpdate((float flt) => {
+                            musicTracks[3].volume = flt;
+                            musicTracks[4].volume = flt;
+                        });
+                        break;
+                    case 2:
+                        LeanTween.value(gameObject, musicTracks[5].volume, 0.05f, 2f).setEaseInQuad().setOnUpdate((float flt) => {
+                            musicTracks[5].volume = flt;
+                            musicTracks[6].volume = flt;
+                        });
+                        break;
+                    // case 3:
+                    //     LeanTween.value(gameObject, musicTracks[7].volume, 0.1f, 2f).setEaseInQuad().setOnUpdate((float flt) => {
+                    //         musicTracks[7].volume = flt;
+                    //         musicTracks[8].volume = flt;
+                    //     });
+                    //     break;
+                    default:
+                        break;
+                }
+                depthLayers[Mathf.Clamp(curLayer - 1, 0, depthLayers.Count-1)].GetComponent<GridLooper>().panUp = true;
                 scoreDelta -= layerThreshold;
             }
         }
-
-        
-
     }
+    
     private void PanLayer(GameObject sceneLayer, bool panActive)
     {
         GridLooper layer = sceneLayer.GetComponent<GridLooper>();
