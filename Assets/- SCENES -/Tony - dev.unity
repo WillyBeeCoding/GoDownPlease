@@ -746,6 +746,10 @@ PrefabInstance:
       propertyPath: m_Tiles.Array.data[129].second.m_TileColorIndex
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4356091026479600227, guid: 809f75c402e955642a6b99502339ad46, type: 3}
+      propertyPath: backgroundSpeed
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 4356091026479600239, guid: 809f75c402e955642a6b99502339ad46, type: 3}
       propertyPath: m_Name
       value: Ground Tilemap 8 - Inverted Order
@@ -1199,7 +1203,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 100
+  m_text: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d990aae24e5a723498322d027959821f, type: 2}
   m_sharedMaterial: {fileID: -8776621846724671039, guid: d990aae24e5a723498322d027959821f, type: 2}
@@ -3798,6 +3802,10 @@ PrefabInstance:
       propertyPath: m_Tiles.Array.data[129].second.m_TileColorIndex
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4356091026479600227, guid: 809f75c402e955642a6b99502339ad46, type: 3}
+      propertyPath: backgroundSpeed
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 4356091026479600239, guid: 809f75c402e955642a6b99502339ad46, type: 3}
       propertyPath: m_Name
       value: Ground Tilemap 9 - SPACE
@@ -4908,6 +4916,10 @@ PrefabInstance:
       propertyPath: m_Tiles.Array.data[129].second.m_TileColorIndex
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4356091026479600227, guid: 809f75c402e955642a6b99502339ad46, type: 3}
+      propertyPath: backgroundSpeed
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 4356091026479600239, guid: 809f75c402e955642a6b99502339ad46, type: 3}
       propertyPath: m_Name
       value: Ground Tilemap 7 - Core
@@ -5345,7 +5357,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 100
+  m_text: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d990aae24e5a723498322d027959821f, type: 2}
   m_sharedMaterial: {fileID: -8776621846724671039, guid: d990aae24e5a723498322d027959821f, type: 2}
@@ -6294,6 +6306,10 @@ PrefabInstance:
     - target: {fileID: 4356091026479600226, guid: 809f75c402e955642a6b99502339ad46, type: 3}
       propertyPath: m_Tiles.Array.data[129].second.m_TileColorIndex
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4356091026479600227, guid: 809f75c402e955642a6b99502339ad46, type: 3}
+      propertyPath: backgroundSpeed
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4356091026479600239, guid: 809f75c402e955642a6b99502339ad46, type: 3}
       propertyPath: m_Name
@@ -7404,6 +7420,10 @@ PrefabInstance:
     - target: {fileID: 4356091026479600226, guid: 809f75c402e955642a6b99502339ad46, type: 3}
       propertyPath: m_Tiles.Array.data[129].second.m_TileColorIndex
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4356091026479600227, guid: 809f75c402e955642a6b99502339ad46, type: 3}
+      propertyPath: backgroundSpeed
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4356091026479600239, guid: 809f75c402e955642a6b99502339ad46, type: 3}
       propertyPath: m_Name
@@ -8540,6 +8560,10 @@ PrefabInstance:
       propertyPath: m_Tiles.Array.data[129].second.m_TileColorIndex
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4356091026479600227, guid: 809f75c402e955642a6b99502339ad46, type: 3}
+      propertyPath: backgroundSpeed
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 4356091026479600239, guid: 809f75c402e955642a6b99502339ad46, type: 3}
       propertyPath: m_Name
       value: Ground Tilemap 4 - Deep Stone
@@ -9669,6 +9693,10 @@ PrefabInstance:
       propertyPath: m_Tiles.Array.data[129].second.m_TileColorIndex
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4356091026479600227, guid: 809f75c402e955642a6b99502339ad46, type: 3}
+      propertyPath: backgroundSpeed
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 4356091026479600239, guid: 809f75c402e955642a6b99502339ad46, type: 3}
       propertyPath: m_Name
       value: Ground Tilemap 6 - Deep Magma
@@ -10686,6 +10714,10 @@ PrefabInstance:
     - target: {fileID: 4356091026479600226, guid: 809f75c402e955642a6b99502339ad46, type: 3}
       propertyPath: m_Tiles.Array.data[129].second.m_TileColorIndex
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4356091026479600227, guid: 809f75c402e955642a6b99502339ad46, type: 3}
+      propertyPath: backgroundSpeed
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4356091026479600239, guid: 809f75c402e955642a6b99502339ad46, type: 3}
       propertyPath: m_Name
@@ -11968,7 +12000,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 100
+  m_text: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d990aae24e5a723498322d027959821f, type: 2}
   m_sharedMaterial: {fileID: -8776621846724671039, guid: d990aae24e5a723498322d027959821f, type: 2}
@@ -13903,7 +13935,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4356091026479600227, guid: 809f75c402e955642a6b99502339ad46, type: 3}
       propertyPath: backgroundSpeed
-      value: 0
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4356091026479600239, guid: 809f75c402e955642a6b99502339ad46, type: 3}
       propertyPath: m_Name
@@ -14434,6 +14466,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameState: 0
   playerRoot: {fileID: 7592978597782775136, guid: 6380efe7989b9cb40964c9b49393d222, type: 3}
+  currentScore: 0
+  highScore: 0
   startCanvas: {fileID: 1071581228}
   overlayCanvas: {fileID: 299125704}
   gameOverCanvas: {fileID: 964481994}
@@ -14442,7 +14476,7 @@ MonoBehaviour:
   mainCamera: {fileID: 519420028}
   resources: {fileID: 0}
   gameStarted: 0
-  cameraSpeed: 3
+  cameraSpeed: 5
 --- !u!4 &2078255047
 Transform:
   m_ObjectHideFlags: 0

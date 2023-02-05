@@ -11,7 +11,7 @@ public class PlayerBehaviour : MonoBehaviour
     public bool useObjectTrail = false;
     public bool useRenderTrail = true;
     public float wobble;
-    public float wobbleMax = 1.2f; //TODO: Smooth this out
+    public float wobbleMax = 1.5f; //TODO: Smooth this out
 
     Rigidbody2D rb;
     public GameObject rootTrail;
@@ -40,16 +40,20 @@ public class PlayerBehaviour : MonoBehaviour
         Vector2 worldVel = ((Vector2)transform.position - prevPosition);
         prevPosition = transform.position;
 
-        if (!IsInvoking(nameof(GetWobble))) {
-            Invoke(nameof(GetWobble), 0.3f);
-            wobble = GetWobble();
-        }
+        
 
-        // create temp vec to lock mouse at Y and still retain physics
-        Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector2 tempVec = new(mousePos.x + wobble, transform.parent.transform.position.y);
+        if (GameManager.Instance.CompareState(GameState.Gameplay))
+        {
+            if (!IsInvoking(nameof(GetWobble)))
+            {
+                Invoke(nameof(GetWobble), 0.3f);
+                wobble = GetWobble();
+            }
 
-        if (GameManager.Instance.CompareState(GameState.Gameplay)) {
+            // create temp vec to lock mouse at Y and still retain physics
+            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector2 tempVec = new(mousePos.x + wobble, transform.parent.transform.position.y);
+
             // mouse follow
             Vector2 targ = tempVec - (Vector2)transform.position;
             rb.AddForce((targ * followStr - worldVel) * rb.mass);
