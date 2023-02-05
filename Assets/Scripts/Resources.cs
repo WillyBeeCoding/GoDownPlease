@@ -7,7 +7,6 @@ public class Resources : MonoBehaviour
 {
     public static Resources Instance; //a static
 
-
     private int _health;// dont use
     private int _water; //dont use
 
@@ -82,7 +81,7 @@ public class Resources : MonoBehaviour
         Debug.Log("Health: " + Health);
         if (Health <= 0) { OnDeath(false); }
     }
-    
+
     void OnDeath(bool parched)
     {
         StartCoroutine(GameManager.Instance.FadeInGameOver(parched));
