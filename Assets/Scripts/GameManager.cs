@@ -21,10 +21,11 @@ public class GameManager : MonoBehaviour
 
     static public int currentScore;
     static public int highScore;
-    public int lives;
 
     public GameObject startCanvas;
     public GameObject overlayCanvas;
+    public GameObject gameOverCanvas;
+    public GameObject blackScreenCanvas;
 
     private GameObject dividingBar;
     private GameObject distanceSign;
@@ -32,8 +33,12 @@ public class GameManager : MonoBehaviour
     private GameObject healthGauge;
     private GameObject waterSign;
     private GameObject waterGauge;
+    private GameObject gameOverCard;
+    private GameObject newScoreDisp;
+    private GameObject highScoreDisp;
+    private GameObject gameOverButtons;
 
-    public GridLooper initialGridLoop;
+    public GridLooper currentGridLoop;
 
     public GameObject mainCamera;
     public Resources resources;
@@ -192,49 +197,37 @@ public class GameManager : MonoBehaviour
         LeanTween.moveLocalX(healthGauge, 0f, 1f).setEaseOutBounce();
 
         // Starts moving the grid
-        StartUpGrid();
+        StartGrid();
         yield return new WaitForSeconds(1f);
         UpdateGameState(GameState.Gameplay);
     }
 
-    public IEnumerator FadeInGameOver()
+    public IEnumerator FadeInGameOver(bool parched)
     {
         yield return new WaitForEndOfFrame();
-
-        // Collects children of the Canvas
-        List<GameObject> overlayParts = new List<GameObject>();
-        foreach (Transform child in overlayCanvas.transform) { overlayParts.Add(child.gameObject); }
-        
-        // Fades in the Overlay Canvas
-        LeanTween.alphaCanvas(overlayCanvas.GetComponent<CanvasGroup>(), 1f, 0.2f);
-
-        // Expands the divider bar
-        Vector2 oldDelta = dividingBar.GetComponent<RectTransform>().sizeDelta;
-        LeanTween.value(dividingBar, oldDelta.x, 750f, 1f).setEaseOutQuad().setOnUpdate((float flt) => {
-            dividingBar.GetComponent<RectTransform>().sizeDelta = new Vector2(flt,  oldDelta.y);
-        });
-
-        // Pans up all the signs
-        yield return new WaitForSeconds(0.5f);
-        LeanTween.moveLocalY(distanceSign, -20f, 0.7f).setEaseOutExpo();
-        yield return new WaitForSeconds(0.3f);
-        LeanTween.moveLocalY(waterSign, -20f, 0.7f).setEaseOutExpo();
-        LeanTween.moveLocalY(healthSign, -20f, 0.7f).setEaseOutExpo();
-        yield return new WaitForSeconds(0.8f);
-        LeanTween.moveLocalX(waterGauge, 0f, 1f).setEaseOutBounce();
-        LeanTween.moveLocalX(healthGauge, 0f, 1f).setEaseOutBounce();
-
-        // Starts moving the grid
-        StartUpGrid();
-        yield return new WaitForSeconds(1f);
+        StopGrid(parched);
         UpdateGameState(GameState.GameOver);
+        LeanTween.alphaCanvas(blackScreenCanvas.GetComponent<CanvasGroup>(), 1f, 2f);//.setEaseInQuad();
+        yield return new WaitForSeconds(2f);
+        mainCamera.GetComponent<Camera>().orthographicSize = 3f;
+        LeanTween.moveLocal(mainCamera, new Vector3(1.5f, 4f, mainCamera.transform.position.z), 0.01f);
+        LeanTween.alphaCanvas(overlayCanvas.GetComponent<CanvasGroup>(), 0f, 0.01f);
+        LeanTween.alphaCanvas(gameOverCanvas.GetComponent<CanvasGroup>(), 1f, 0.01f);
+        yield return new WaitForSeconds(0.1f);
+        LeanTween.alphaCanvas(blackScreenCanvas.GetComponent<CanvasGroup>(), 0f, 2f);//.setEaseInQuad();   
+        
     }
 
-    
+    private void StartGrid() {
+        LeanTween.value(currentGridLoop.gameObject, currentGridLoop.backgroundSpeed, 3f, 5f).setEaseInOutQuad().setOnUpdate((float flt) => {
+            currentGridLoop.backgroundSpeed = flt;
+        });
+    }
 
-    private void StartUpGrid() {
-        LeanTween.value(initialGridLoop.gameObject, initialGridLoop.backgroundSpeed, 3f, 5f).setEaseInOutQuad().setOnUpdate((float flt) => {
-            initialGridLoop.backgroundSpeed = flt;
+    private void StopGrid(bool parched) {
+        float speed = parched ? 3f : 0f;
+        LeanTween.value(currentGridLoop.gameObject, currentGridLoop.backgroundSpeed, 0f, speed).setEaseInOutQuad().setOnUpdate((float flt) => {
+            currentGridLoop.backgroundSpeed = flt;
         });
     }
 
@@ -245,6 +238,10 @@ public class GameManager : MonoBehaviour
         healthGauge = GameObject.Find("Health Gauge");
         waterSign = GameObject.Find("Water Sign");
         waterGauge = GameObject.Find("Water Gauge");
+        gameOverCard = GameObject.Find("Game Over Card");
+        newScoreDisp = GameObject.Find("New Score Display");
+        highScoreDisp = GameObject.Find("High Score Display");
+        gameOverButtons = GameObject.Find("Game Over Buttons");
     }
 
     
