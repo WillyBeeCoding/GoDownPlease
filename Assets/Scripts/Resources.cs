@@ -85,10 +85,14 @@ public class Resources : MonoBehaviour
     void OnDeath(bool parched)
     {
         GameManager.Instance.UpdateGameState(GameState.GameOver);
-        StartCoroutine(GameManager.Instance.FadeInGameOver(parched));
         GameManager.Instance.SetScoreValues();
         Time.timeScale = 0.5f;  // :D
         AudioSource.PlayClipAtPoint(thing, Camera.main.transform.position);
+        StartCoroutine(GameManager.Instance.FadeInGameOverAnim(parched));
+    }
 
+    void ResetGame() {
+        Water = waterMax;
+        Health = healthMax;
     }
 }

@@ -156,6 +156,11 @@ public class GameManager : MonoBehaviour
         StartCoroutine(FadeOutMenuAnim());
     }
 
+    public void FadeOutGameOver()
+    {
+        StartCoroutine(FadeOutGameOverAnim());
+    }
+
     private IEnumerator FadeInMenuAnim()
     {
         yield return new WaitForEndOfFrame();
@@ -184,10 +189,6 @@ public class GameManager : MonoBehaviour
     private IEnumerator FadeInOverlayAnim()
     {
         yield return new WaitForEndOfFrame();
-
-        // Collects children of the Canvas
-        List<GameObject> overlayParts = new List<GameObject>();
-        foreach (Transform child in overlayCanvas.transform) { overlayParts.Add(child.gameObject); }
         
         // Fades in the Overlay Canvas
         LeanTween.alphaCanvas(overlayCanvas.GetComponent<CanvasGroup>(), 1f, 0.2f);
@@ -215,7 +216,7 @@ public class GameManager : MonoBehaviour
         UpdateGameState(GameState.Gameplay);
     }
 
-    public IEnumerator FadeInGameOver(bool parched)
+    public IEnumerator FadeInGameOverAnim(bool parched)
     {
         yield return new WaitForEndOfFrame();
         StopGrid(parched);
@@ -234,15 +235,30 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         gameOverCanvas.GetComponent<CanvasGroup>().blocksRaycasts = true;
     }
-
+    
     private void StartCam()
     {
         LeanTween.value(gameObject, 0f, cameraSpeed, 5f).setEaseInOutQuad().setOnUpdate((float flt) => {
             cameraSpeed = flt;
         });
     }
+
+    private IEnumerator FadeOutGameOverAnim()
+    {
+        yield return new WaitForEndOfFrame();
+        LeanTween.alphaCanvas(blackScreenCanvas.GetComponent<CanvasGroup>(), 1f, 2f);
+        startCanvas.GetComponent<CanvasGroup>().blocksRaycasts = false;
+        yield return new WaitForSeconds(2f);
+
+        gameObject.BroadcastMessage("ResetGame");
+        yield return new WaitForSeconds(0.1f);
+
+        LeanTween.alphaCanvas(blackScreenCanvas.GetComponent<CanvasGroup>(), 0f, 2f);
+        StartCoroutine(FadeInOverlayAnim());
+    }
+
     private void StartGrid() {
-        LeanTween.value(currentGridLoop.gameObject, 0f,cameraSpeed , 5f).setEaseInOutQuad().setOnUpdate((float flt) => {
+        LeanTween.value(currentGridLoop.gameObject, 0f, cameraSpeed , 5f).setEaseInOutQuad().setOnUpdate((float flt) => {
             currentGridLoop.backgroundSpeed = flt;
         });
     }
@@ -275,5 +291,28 @@ public class GameManager : MonoBehaviour
         newScoreDisp = GameObject.Find("New Score Display");
         highScoreDisp = GameObject.Find("High Score Display");
         gameOverButtons = GameObject.Find("Game Over Buttons");
+    }
+
+    public void ResetGame() {
+        currentScore = 0;
+        Time.timeScale = 1f;
+        gameObject.transform.position = new Vector3(0,0,0);
+        LeanTween.moveLocal(mainCamera, new Vector3(0f, 0f, mainCamera.transform.position.z), 0.01f);
+        LeanTween.value(mainCamera, mainCamera.GetComponent<Camera>().orthographicSize, 6f, 0.01f).setEaseInOutQuad().setOnUpdate((float flt) => {
+            mainCamera.GetComponent<Camera>().orthographicSize = flt;
+        });
+
+        LeanTween.alphaCanvas(gameOverCanvas.GetComponent<CanvasGroup>(), 0f, 0.01f);
+        Vector2 oldDelta = dividingBar.GetComponent<RectTransform>().sizeDelta;
+        LeanTween.value(dividingBar, oldDelta.x, 0f, 0.01f).setEaseOutQuad().setOnUpdate((float flt) => {
+            dividingBar.GetComponent<RectTransform>().sizeDelta = new Vector2(flt,  oldDelta.y);
+        });
+
+        // Pans up all the signs
+        LeanTween.moveLocalY(distanceSign, -100f, 0.01f).setEaseOutExpo();
+        LeanTween.moveLocalY(waterSign, -100f, 0.01f).setEaseOutExpo();
+        LeanTween.moveLocalY(healthSign, -100f, 0.01f).setEaseOutExpo();
+        LeanTween.moveLocalX(waterGauge, -150f, 0.01f).setEaseOutBounce();
+        LeanTween.moveLocalX(healthGauge, -150f, 0.01f).setEaseOutBounce();
     }
 }

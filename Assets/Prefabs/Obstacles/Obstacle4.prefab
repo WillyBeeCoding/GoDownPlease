@@ -101,11 +101,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4263584429625226138, guid: 7b267258278cf8a44ad9bdf22408a66f, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
-      value: 0.64
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4263584429625226138, guid: 7b267258278cf8a44ad9bdf22408a66f, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.y
-      value: 0.64
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4263584429625226138, guid: 7b267258278cf8a44ad9bdf22408a66f, type: 3}
       propertyPath: m_Points.m_Paths.Array.data[0].Array.size

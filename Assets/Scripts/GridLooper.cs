@@ -21,9 +21,9 @@ public class GridLooper : MonoBehaviour
     }
 
     public void ResetGame() {
-        transform.localPosition = new Vector2(0, 0);
+        transform.localPosition = new Vector3(0, 0, transform.localPosition.z);
         panUp = false;
-        GameManager.Instance.UpdateGameState(GameState.MainMenu);
+        //GameManager.Instance.UpdateGameState(GameState.MainMenu);
     }
 
 }

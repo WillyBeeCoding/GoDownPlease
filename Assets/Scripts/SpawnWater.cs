@@ -41,4 +41,10 @@ public class SpawnWater : MonoBehaviour
         Quaternion spawnRot = Quaternion.Euler(0, 0, 0); //dont rotate it, maybe, but keep this for compatibility
         GameObject newObstacle = Instantiate(waterPrefabs[Random.Range(0,waterPrefabs.Count-1)], spawnPos , spawnRot);
     }
+
+    public void ResetGame() {
+        GameObject[] waters = GameObject.FindGameObjectsWithTag("Water Container");
+        foreach (GameObject w in waters)
+            { Destroy(w); }
+    }
 }
