@@ -22,7 +22,7 @@ public class Resources : MonoBehaviour
     public int waterLoss = 1;
     [Tooltip ("How often water is lost in seconds")]
     public float waterLossTime = 0.33f;
-    public float parchedPercent = 0f;
+    private float parchedPercent = 0f;
 
     //Update the UI whenever health is set
     public int Health { 
@@ -53,7 +53,7 @@ public class Resources : MonoBehaviour
 
     private void FixedUpdate() {
         if (GameManager.Instance.CompareState(GameState.Gameplay)) {
-            //Drink water
+            //CONSUME LIQUID
             if (!IsInvoking(nameof(MakeThirsty))) {
                 Invoke(nameof(MakeThirsty), waterLossTime);
                 GetParchedAmount();
