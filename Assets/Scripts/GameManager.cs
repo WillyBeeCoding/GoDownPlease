@@ -20,8 +20,8 @@ public class GameManager : MonoBehaviour
     public GameState gameState;
     public GameObject playerRoot;
 
-    static public int currentScore;
-    static public int highScore;
+    public int currentScore;
+    public int highScore;
 
     public GameObject startCanvas;
     public GameObject overlayCanvas;
@@ -66,7 +66,7 @@ public class GameManager : MonoBehaviour
         if (CompareState(GameState.Gameplay))
         {
             transform.position += new Vector3(0, -cameraSpeed * Time.deltaTime, 0);
-            currentScore = (int)(Time.time * 3.3f);
+            currentScore += (int)(Time.deltaTime*33.3f);
             overlayCanvas.GetComponentInChildren<TextMeshProUGUI>().text = currentScore.ToString();
         }
     }
@@ -86,6 +86,7 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.Gameplay: // set when we start playing the game actively
                 SpawnPlayer(new Vector2(0,0), true);
+                currentScore = 0;
                 //SpawnPlayerWithForce(new Vector2(0,0), new Vector2(0,-1), 100);
                 break;
             case GameState.GameOver: // set on death

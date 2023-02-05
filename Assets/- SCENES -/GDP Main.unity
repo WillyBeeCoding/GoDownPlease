@@ -12804,7 +12804,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1792042476}
   m_CullTransparentMesh: 1
---- !u!1 &1829499671
+--- !u!1 &1834814742
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -12812,51 +12812,73 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1829499672}
-  - component: {fileID: 1829499673}
+  - component: {fileID: 1834814743}
+  - component: {fileID: 1834814745}
+  - component: {fileID: 1834814744}
   m_Layer: 0
   m_Name: Spawn Point
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1829499672
+--- !u!4 &1834814743
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1829499671}
+  m_GameObject: {fileID: 1834814742}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -15, z: -2}
+  m_LocalPosition: {x: 0, y: -11.65, z: -2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2078255047}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1829499673
+--- !u!114 &1834814744
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1829499671}
+  m_GameObject: {fileID: 1834814742}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33680f5c1fe647b49a72b629cd7c6876, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waterPrefabs:
+  - {fileID: 6932912595032458, guid: 7c87114c5385a9b4da28e34c7964c7f2, type: 3}
+  minX: -4
+  maxX: 4
+  minY: 0
+  maxY: 0.5
+  timeBetweenSpawn: 10
+  spawnTime: 0
+  canSpawn: 1
+--- !u!114 &1834814745
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1834814742}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e23622615ca1144aad3169836db813d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  obstacles:
+  obstaclePrefabs:
   - {fileID: 3836321153887595316, guid: 9e1166ad526c42344b6d836bcd94473d, type: 3}
   - {fileID: 7698862171163869940, guid: 5806c7ee77c44b944b9ebbee6f147040, type: 3}
   - {fileID: 1812451484636302069, guid: 6387ef9eeaf4be04ca09155bbb7b4bee, type: 3}
-  obstacleSprites: []
+  - {fileID: 708164793004220485, guid: e347bd7a78cc8744a837c5f50ab53483, type: 3}
   minX: -5
   maxX: 5
-  minY: 3
-  maxY: 3.5
+  minY: 0
+  maxY: 0.5
   timeBetweenSpawn: 0.5
   canSpawn: 1
 --- !u!1 &1895464066
@@ -14433,7 +14455,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1829499672}
+  - {fileID: 1834814743}
   - {fileID: 519420032}
   - {fileID: 1356155534}
   - {fileID: 1895464067}
@@ -14460,7 +14482,6 @@ MonoBehaviour:
   waterMax: 100
   waterLoss: 1
   waterLossTime: 0.33
-  parchedPercent: 0
 --- !u!1 &2093485740
 GameObject:
   m_ObjectHideFlags: 0
