@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour
     public GameObject gameOverCanvas;
     public GameObject blackScreenCanvas;
 
+    private GameObject mainMenuButtons;
     private GameObject dividingBar;
     private GameObject distanceSign;
     private GameObject healthSign;
@@ -84,8 +85,8 @@ public class GameManager : MonoBehaviour
                 FadeInMenu();
                 break;
             case GameState.Gameplay: // set when we start playing the game actively
-                SpawnPlayerWithForce(new Vector2(0,0), new Vector2(0,-1), 100);
-                //SpawnPlayerWithForce(Vector2 pos, Vector2 dir, float mag);
+                SpawnPlayer(new Vector2(0,0), true);
+                //SpawnPlayerWithForce(new Vector2(0,0), new Vector2(0,-1), 100);
                 break;
             case GameState.GameOver: // set on death
                 break;
@@ -103,20 +104,20 @@ public class GameManager : MonoBehaviour
     {
         GameObject temp = Instantiate(playerRoot, transform, false);
         temp.SetActive(isActive);
-        try
-        {
+        try {
             temp.GetComponentInChildren<TrailRenderer>(true).emitting = true;
+        } catch (Exception e) { 
+            Debug.LogError("You ain't got no trail dummy ------ " + e); 
         }
-        catch (Exception e) { Debug.LogError("You ain't got no trail dummy ------ " + e); }
         return temp;
     }
     
-    private GameObject SpawnPlayerWithForce(Vector2 pos, Vector2 dir, float mag)
-    {
-        GameObject temp = SpawnPlayer(pos, true);
-        temp.GetComponent<Rigidbody2D>().AddForce(dir * mag);
-        return temp;
-    }
+    // private GameObject SpawnPlayerWithForce(Vector2 pos, Vector2 dir, float mag)
+    // {
+    //     GameObject temp = SpawnPlayer(pos, true);
+    //     temp.GetComponent<Rigidbody2D>().AddForce(dir * mag);
+    //     return temp;
+    // }
 
     public void AdjustWaterUI() {
         if (GameManager.Instance.gameState == GameState.Gameplay) {
@@ -154,6 +155,8 @@ public class GameManager : MonoBehaviour
         yield return new WaitForEndOfFrame();
         LeanTween.alphaCanvas(startCanvas.GetComponent<CanvasGroup>(), 1f, 1.5f).setEaseInQuad();
         yield return new WaitForSeconds(1.5f);
+        LeanTween.moveLocalY(mainMenuButtons, -240f, 0.5f).setEaseOutExpo();
+        yield return new WaitForSeconds(0.5f);
         startCanvas.GetComponent<CanvasGroup>().blocksRaycasts = true;
     }
 
@@ -209,16 +212,20 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForEndOfFrame();
         StopGrid(parched);
-        UpdateGameState(GameState.GameOver);
         LeanTween.alphaCanvas(blackScreenCanvas.GetComponent<CanvasGroup>(), 1f, 2f);//.setEaseInQuad();
         yield return new WaitForSeconds(2f);
+        UpdateGameState(GameState.GameOver);
         mainCamera.GetComponent<Camera>().orthographicSize = 3f;
         LeanTween.moveLocal(mainCamera, new Vector3(1.5f, 4f, mainCamera.transform.position.z), 0.01f);
         LeanTween.alphaCanvas(overlayCanvas.GetComponent<CanvasGroup>(), 0f, 0.01f);
         LeanTween.alphaCanvas(gameOverCanvas.GetComponent<CanvasGroup>(), 1f, 0.01f);
+        LeanTween.moveLocalY(gameOverCard, gameOverCard.transform.localPosition.y + 10f, 1f).setEaseInOutQuad().setLoopPingPong();
         yield return new WaitForSeconds(0.1f);
-        LeanTween.alphaCanvas(blackScreenCanvas.GetComponent<CanvasGroup>(), 0f, 2f);//.setEaseInQuad();   
-        
+        LeanTween.alphaCanvas(blackScreenCanvas.GetComponent<CanvasGroup>(), 0f, 2f);//.setEaseInQuad();
+        yield return new WaitForSeconds(2f);
+        LeanTween.moveLocalY(gameOverButtons, -240f, 0.5f).setEaseOutExpo();
+        yield return new WaitForSeconds(0.5f);
+        gameOverCanvas.GetComponent<CanvasGroup>().blocksRaycasts = true;
     }
 
     private void StartGrid() {
@@ -228,13 +235,15 @@ public class GameManager : MonoBehaviour
     }
 
     private void StopGrid(bool parched) {
-        float speed = parched ? 3f : 0f;
+        float speed = parched ? 2f : 0f;
+        Debug.LogWarning("PARCHED " + parched);
         LeanTween.value(currentGridLoop.gameObject, currentGridLoop.backgroundSpeed, 0f, speed).setEaseInOutQuad().setOnUpdate((float flt) => {
             currentGridLoop.backgroundSpeed = flt;
         });
     }
 
     private void FindUIAssets() {
+        mainMenuButtons = GameObject.Find("Main Menu Buttons");
         dividingBar = GameObject.Find("Dividing Bar");
         distanceSign = GameObject.Find("Distance Sign");
         healthSign = GameObject.Find("Health Sign");
@@ -246,7 +255,4 @@ public class GameManager : MonoBehaviour
         highScoreDisp = GameObject.Find("High Score Display");
         gameOverButtons = GameObject.Find("Game Over Buttons");
     }
-
-    
-
 }
