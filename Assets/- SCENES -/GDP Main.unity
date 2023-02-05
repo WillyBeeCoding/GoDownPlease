@@ -12778,7 +12778,6 @@ MonoBehaviour:
   - {fileID: 3836321153887595316, guid: 9e1166ad526c42344b6d836bcd94473d, type: 3}
   - {fileID: 7698862171163869940, guid: 5806c7ee77c44b944b9ebbee6f147040, type: 3}
   - {fileID: 1812451484636302069, guid: 6387ef9eeaf4be04ca09155bbb7b4bee, type: 3}
-  - {fileID: 708164793004220485, guid: e347bd7a78cc8744a837c5f50ab53483, type: 3}
   obstacleSprites: []
   minX: -5
   maxX: 5
@@ -14383,6 +14382,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be005787f3d82a14ea585bc04fd7f6a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _health: 0
+  _water: 0
   waterMax: 100
   waterLoss: 1
   waterLossTime: 0.33

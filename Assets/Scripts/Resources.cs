@@ -7,6 +7,7 @@ public class Resources : MonoBehaviour
 {
     public static Resources Instance; //a static
 
+
     private int _health;// dont use
     private int _water; //dont use
 
@@ -33,6 +34,7 @@ public class Resources : MonoBehaviour
     }
 
     //Update the UI whenever water is set
+
     public int Water {
         get { return _water; }
         set {

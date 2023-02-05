@@ -11,9 +11,11 @@ public class Obstacle : MonoBehaviour
         if (other.CompareTag("Player")) {
             AudioSource.PlayClipAtPoint(ouchieClip, Camera.main.transform.position);
             Resources.Instance.ApplyDamage(damage);
+            GetComponent<PolygonCollider2D>().enabled = false;
 
         } else if (other.CompareTag("Border")) {
             Destroy(this.gameObject);
         }
+
     }
 }
