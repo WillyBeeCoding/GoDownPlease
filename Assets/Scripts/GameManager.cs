@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UIElements;
 
 public enum GameState
 {
@@ -19,9 +20,12 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;  
     public GameState gameState;
     public GameObject playerRoot;
+    public List<GameObject> depthLayers;
+    public GridLooper currentLayer;
 
     public float currentScore;
     public int highScore;
+    private float scoreDelta;
 
     public GameObject startCanvas;
     public GameObject overlayCanvas;
@@ -48,6 +52,7 @@ public class GameManager : MonoBehaviour
     public bool gameStarted;
     public float cameraSpeed;
     public float maxCameraSpeed;
+    public float layerThreshold;
 
     public List<AudioSource> musicTracks;
 
@@ -71,7 +76,9 @@ public class GameManager : MonoBehaviour
         {
             transform.position += new Vector3(0, -cameraSpeed * Time.deltaTime, 0);
             currentScore += (Time.deltaTime*33.3f);
+            scoreDelta += (Time.deltaTime * 33.3f);
             overlayCanvas.GetComponentInChildren<TextMeshProUGUI>().text = ((int)currentScore).ToString();
+            CheckDepthLayer();
         }
     }
 
@@ -87,10 +94,10 @@ public class GameManager : MonoBehaviour
         {
             case GameState.MainMenu: //set when we are in the main menu
                 FadeInMenu();
+                currentLayer = depthLayers[0].GetComponent<GridLooper>();
                 break;
             case GameState.Gameplay: // set when we start playing the game actively
-                SpawnPlayer(new Vector2(0,0), true);
-                currentScore = 0;
+                BeginGamePlay();
                 //SpawnPlayerWithForce(new Vector2(0,0), new Vector2(0,-1), 100);
                 break;
             case GameState.GameOver: // set on death
@@ -104,7 +111,11 @@ public class GameManager : MonoBehaviour
         //ChangeGameState?.Invoke(state); 
         //was going to try to do invokes for state changes, but thats too complicated right now
     }
-
+    private void BeginGamePlay()
+    {
+        SpawnPlayer(new Vector2(0, 0), true);
+        currentScore = 0;
+    }
     private GameObject SpawnPlayer(Vector2 pos, bool isActive)
     {
         GameObject temp = Instantiate(playerRoot, transform, false);
@@ -129,6 +140,41 @@ public class GameManager : MonoBehaviour
         GameObject.Find("High Score Value").GetComponent<TextMeshProUGUI>().text = (highScore).ToString();
         GameObject.Find("Player Score Value").GetComponent<TextMeshProUGUI>().text = ((int)currentScore).ToString();
     }
+
+    public void CheckDepthLayer()
+    {
+        // this method is a one shot check based on depth in that layer
+        // and is much more elegant
+        //float layerDepth = currentScore;
+        //int curLayer = Mathf.FloorToInt(currentScore / 1000);
+        //if(layerDepth >= 1000)
+        //{
+        //    depthLayers[curLayer - 1].GetComponent<GridLooper>().panUp = true;
+        //    layerDepth = 0;
+        //}
+
+        int curLayer = Mathf.FloorToInt(currentScore / layerThreshold);
+
+        if (scoreDelta >= layerThreshold && curLayer <= depthLayers.Count-1) { 
+            if (depthLayers[curLayer - 1].GetComponent<GridLooper>().panUp == false)
+            {
+                depthLayers[curLayer - 1].GetComponent<GridLooper>().panUp = true;
+                scoreDelta -= layerThreshold;
+            }
+        }
+
+        
+
+    }
+    private void PanLayer(GameObject sceneLayer, bool panActive)
+    {
+        GridLooper layer = sceneLayer.GetComponent<GridLooper>();
+        if(layer.panUp == false)
+        {
+            layer.panUp = panActive;
+        }
+    }
+
     public void AdjustWaterUI() {
         if (GameManager.Instance.gameState == GameState.Gameplay) {
             float position = -146f * (1f - (Resources.Instance.Water / 100f));
@@ -316,7 +362,7 @@ public class GameManager : MonoBehaviour
 
     private void StopGrid(bool parched) {
         float speed = parched ? 2f : 0f;
-        Debug.LogWarning("PARCHED " + parched);
+        //Debug.LogWarning("PARCHED " + parched);
         LeanTween.value(currentGridLoop.gameObject, currentGridLoop.backgroundSpeed, 0f, speed).setEaseInOutQuad().setOnUpdate((float flt) => {
             currentGridLoop.backgroundSpeed = flt;
         });
@@ -324,7 +370,7 @@ public class GameManager : MonoBehaviour
     private void StopCam(bool parched)
     {
         float speed = parched ? 2f : 0f;
-        Debug.LogWarning("PARCHED " + parched);
+        //Debug.LogWarning("PARCHED " + parched);
         LeanTween.value(currentGridLoop.gameObject, cameraSpeed, 0f, speed).setEaseInOutQuad().setOnUpdate((float flt) => {
             cameraSpeed = flt;
         });
