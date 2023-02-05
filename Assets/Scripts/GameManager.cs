@@ -166,12 +166,12 @@ public class GameManager : MonoBehaviour
                             musicTracks[6].volume = flt;
                         });
                         break;
-                    // case 3:
-                    //     LeanTween.value(gameObject, musicTracks[7].volume, 0.1f, 2f).setEaseInQuad().setOnUpdate((float flt) => {
-                    //         musicTracks[7].volume = flt;
-                    //         musicTracks[8].volume = flt;
-                    //     });
-                    //     break;
+                    case 3:
+                        LeanTween.value(gameObject, musicTracks[7].volume, 0.1f, 2f).setEaseInQuad().setOnUpdate((float flt) => {
+                            musicTracks[7].volume = flt;
+                            musicTracks[8].volume = flt;
+                        });
+                        break;
                     default:
                         break;
                 }
