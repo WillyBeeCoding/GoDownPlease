@@ -46,6 +46,7 @@ public class GameManager : MonoBehaviour
     public Resources resources;
     public bool gameStarted;
     public float cameraSpeed;
+    public float maxCameraSpeed;
 
     private void Awake()
     {
@@ -223,6 +224,17 @@ public class GameManager : MonoBehaviour
         StopCam(parched);
         LeanTween.alphaCanvas(blackScreenCanvas.GetComponent<CanvasGroup>(), 1f, 2f);//.setEaseInQuad();
         yield return new WaitForSeconds(2f);
+
+        GameObject[] waters = GameObject.FindGameObjectsWithTag("Water Container");
+        foreach (GameObject w in waters)
+            { Destroy(w); }
+
+        GameObject[] obstacles = GameObject.FindGameObjectsWithTag("Obstacle");
+        foreach (GameObject o in obstacles)
+            { Destroy(o); }
+            
+        Time.timeScale = 1f;
+        currentGridLoop.ResetPosition();
         mainCamera.GetComponent<Camera>().orthographicSize = 3f;
         LeanTween.moveLocal(mainCamera, new Vector3(1.5f, 4f, mainCamera.transform.position.z), 0.01f);
         LeanTween.alphaCanvas(overlayCanvas.GetComponent<CanvasGroup>(), 0f, 0.01f);
@@ -238,7 +250,7 @@ public class GameManager : MonoBehaviour
     
     private void StartCam()
     {
-        LeanTween.value(gameObject, 0f, cameraSpeed, 5f).setEaseInOutQuad().setOnUpdate((float flt) => {
+        LeanTween.value(gameObject, 0f, maxCameraSpeed, 5f).setEaseInOutQuad().setOnUpdate((float flt) => {
             cameraSpeed = flt;
         });
     }
@@ -247,7 +259,7 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForEndOfFrame();
         LeanTween.alphaCanvas(blackScreenCanvas.GetComponent<CanvasGroup>(), 1f, 2f);
-        startCanvas.GetComponent<CanvasGroup>().blocksRaycasts = false;
+        gameOverCanvas.GetComponent<CanvasGroup>().blocksRaycasts = false;
         yield return new WaitForSeconds(2f);
 
         gameObject.BroadcastMessage("ResetGame");
@@ -258,7 +270,7 @@ public class GameManager : MonoBehaviour
     }
 
     private void StartGrid() {
-        LeanTween.value(currentGridLoop.gameObject, 0f, cameraSpeed , 5f).setEaseInOutQuad().setOnUpdate((float flt) => {
+        LeanTween.value(currentGridLoop.gameObject, 0f, maxCameraSpeed , 5f).setEaseInOutQuad().setOnUpdate((float flt) => {
             currentGridLoop.backgroundSpeed = flt;
         });
     }
@@ -295,12 +307,14 @@ public class GameManager : MonoBehaviour
 
     public void ResetGame() {
         currentScore = 0;
-        Time.timeScale = 1f;
+        overlayCanvas.GetComponentInChildren<TextMeshProUGUI>().text = ((int)currentScore).ToString();
+
         gameObject.transform.position = new Vector3(0,0,0);
         LeanTween.moveLocal(mainCamera, new Vector3(0f, 0f, mainCamera.transform.position.z), 0.01f);
         LeanTween.value(mainCamera, mainCamera.GetComponent<Camera>().orthographicSize, 6f, 0.01f).setEaseInOutQuad().setOnUpdate((float flt) => {
             mainCamera.GetComponent<Camera>().orthographicSize = flt;
         });
+        
 
         LeanTween.alphaCanvas(gameOverCanvas.GetComponent<CanvasGroup>(), 0f, 0.01f);
         Vector2 oldDelta = dividingBar.GetComponent<RectTransform>().sizeDelta;

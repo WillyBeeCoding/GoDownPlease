@@ -20,6 +20,12 @@ public class GridLooper : MonoBehaviour
         }
     }
 
+    public void ResetPosition() {
+        backgroundRenderer.material.mainTextureOffset = new Vector2(0, 0);
+        transform.localPosition = new Vector3(0, 0, transform.localPosition.z);
+        panUp = false;
+    }
+
     public void ResetGame() {
         transform.localPosition = new Vector3(0, 0, transform.localPosition.z);
         panUp = false;

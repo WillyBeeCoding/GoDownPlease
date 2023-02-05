@@ -87,7 +87,9 @@ public class Resources : MonoBehaviour
         GameManager.Instance.UpdateGameState(GameState.GameOver);
         GameManager.Instance.SetScoreValues();
         Time.timeScale = 0.5f;  // :D
-        AudioSource.PlayClipAtPoint(thing, Camera.main.transform.position);
+        if (thing != null) {
+            AudioSource.PlayClipAtPoint(thing, Camera.main.transform.position);
+        }
         StartCoroutine(GameManager.Instance.FadeInGameOverAnim(parched));
     }
 
