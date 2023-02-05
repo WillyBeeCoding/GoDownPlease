@@ -16,6 +16,5 @@ public class Obstacle : MonoBehaviour
         } else if (other.CompareTag("Border")) {
             Destroy(this.gameObject);
         }
-
     }
 }

@@ -42,4 +42,10 @@ public class SpawnObstacles : MonoBehaviour
         Quaternion spawnRot = Quaternion.Euler(0, 0, Random.Range(0, 360));
         GameObject newObstacle = Instantiate(obstaclePrefabs[Random.Range(0, obstaclePrefabs.Count-1)], spawnPos, spawnRot);
     }
+
+    public void ResetGame() {
+        GameObject[] obstacles = GameObject.FindGameObjectsWithTag("Obstacle");
+        foreach (GameObject o in obstacles)
+            { Destroy(o); }
+    }
 }

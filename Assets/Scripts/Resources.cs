@@ -84,6 +84,11 @@ public class Resources : MonoBehaviour
 
     void OnDeath(bool parched)
     {
-        StartCoroutine(GameManager.Instance.FadeInGameOver(parched));
+        StartCoroutine(GameManager.Instance.FadeInGameOverAnim(parched));
+    }
+
+    void ResetGame() {
+        Water = waterMax;
+        Health = healthMax;
     }
 }

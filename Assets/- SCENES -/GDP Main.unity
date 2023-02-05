@@ -2599,7 +2599,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2078255046}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: FadeOutMenu
+        m_MethodName: FadeOutGameOver
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -14434,6 +14434,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameState: 0
   playerRoot: {fileID: 7592978597782775136, guid: 6380efe7989b9cb40964c9b49393d222, type: 3}
+  currentScore: 0
+  highScore: 0
   startCanvas: {fileID: 1071581228}
   overlayCanvas: {fileID: 299125704}
   gameOverCanvas: {fileID: 964481994}

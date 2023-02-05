@@ -65,4 +65,8 @@ public class PlayerBehaviour : MonoBehaviour
         float temp = Resources.Instance.GetParchedAmount() * wobbleMax;
         return Random.Range(-temp, temp);//weebls wobble TODO: Smooth this out
     }
+
+    public void ResetGame() {
+        Destroy(gameObject);
+    }
 }

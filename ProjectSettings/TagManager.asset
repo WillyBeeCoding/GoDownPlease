@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Border
   - Root
+  - Obstacle
+  - Water Container
   layers:
   - Default
   - TransparentFX
