@@ -233,12 +233,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startPos: {x: 0, y: 0}
-  followStr: 20
-  linearDrag: 3
+  followStr: 15
+  linearDrag: 5
   useObjectTrail: 0
   useRenderTrail: 1
-  rootTrail: {fileID: 1828382316074811456, guid: cc7c5d6704fcd9a42a58a7de3a443a55, type: 3}
-  trailHolder: {fileID: 5337661945835635435}
+  wobble: 0
+  wobbleMax: 1.2
+  rootTrail: {fileID: 0}
+  trailHolder: {fileID: 0}
 --- !u!212 &5764554774599480307
 SpriteRenderer:
   m_ObjectHideFlags: 0
