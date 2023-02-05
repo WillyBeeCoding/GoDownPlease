@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
     public GameState gameState;
     public GameObject playerRoot;
 
-    public int currentScore;
+    public float currentScore;
     public int highScore;
 
     public GameObject startCanvas;
@@ -66,8 +66,8 @@ public class GameManager : MonoBehaviour
         if (CompareState(GameState.Gameplay))
         {
             transform.position += new Vector3(0, -cameraSpeed * Time.deltaTime, 0);
-            currentScore += (int)(Time.deltaTime*33.3f);
-            overlayCanvas.GetComponentInChildren<TextMeshProUGUI>().text = currentScore.ToString();
+            currentScore += (Time.deltaTime*33.3f);
+            overlayCanvas.GetComponentInChildren<TextMeshProUGUI>().text = ((int)currentScore).ToString();
         }
     }
 
@@ -91,7 +91,7 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.GameOver: // set on death
                 break;
-            case GameState.Scoreboard: // set if we view the scoreboard, if we want to do anything fancy.  Optional.
+            case GameState.Scoreboard: // set if we view the scoreboard, if we want to do anything fancy.  Optional.                
                 break;
             default:
                 break;
@@ -119,7 +119,12 @@ public class GameManager : MonoBehaviour
     //     temp.GetComponent<Rigidbody2D>().AddForce(dir * mag);
     //     return temp;
     // }
-
+    public void SetScoreValues()
+    {
+        highScore = currentScore > highScore ? (int)currentScore : highScore;
+        GameObject.Find("High Score Value").GetComponent<TextMeshProUGUI>().text = (highScore).ToString();
+        GameObject.Find("Player Score Value").GetComponent<TextMeshProUGUI>().text = ((int)currentScore).ToString();
+    }
     public void AdjustWaterUI() {
         if (GameManager.Instance.gameState == GameState.Gameplay) {
             float position = -146f * (1f - (Resources.Instance.Water / 100f));
@@ -205,6 +210,7 @@ public class GameManager : MonoBehaviour
 
         // Starts moving the grid
         StartGrid();
+        StartCam();
         yield return new WaitForSeconds(1f);
         UpdateGameState(GameState.Gameplay);
     }
@@ -213,9 +219,9 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForEndOfFrame();
         StopGrid(parched);
+        StopCam(parched);
         LeanTween.alphaCanvas(blackScreenCanvas.GetComponent<CanvasGroup>(), 1f, 2f);//.setEaseInQuad();
         yield return new WaitForSeconds(2f);
-        UpdateGameState(GameState.GameOver);
         mainCamera.GetComponent<Camera>().orthographicSize = 3f;
         LeanTween.moveLocal(mainCamera, new Vector3(1.5f, 4f, mainCamera.transform.position.z), 0.01f);
         LeanTween.alphaCanvas(overlayCanvas.GetComponent<CanvasGroup>(), 0f, 0.01f);
@@ -229,8 +235,14 @@ public class GameManager : MonoBehaviour
         gameOverCanvas.GetComponent<CanvasGroup>().blocksRaycasts = true;
     }
 
+    private void StartCam()
+    {
+        LeanTween.value(gameObject, 0f, cameraSpeed, 5f).setEaseInOutQuad().setOnUpdate((float flt) => {
+            cameraSpeed = flt;
+        });
+    }
     private void StartGrid() {
-        LeanTween.value(currentGridLoop.gameObject, currentGridLoop.backgroundSpeed, 3f, 5f).setEaseInOutQuad().setOnUpdate((float flt) => {
+        LeanTween.value(currentGridLoop.gameObject, 0f,cameraSpeed , 5f).setEaseInOutQuad().setOnUpdate((float flt) => {
             currentGridLoop.backgroundSpeed = flt;
         });
     }
@@ -240,6 +252,14 @@ public class GameManager : MonoBehaviour
         Debug.LogWarning("PARCHED " + parched);
         LeanTween.value(currentGridLoop.gameObject, currentGridLoop.backgroundSpeed, 0f, speed).setEaseInOutQuad().setOnUpdate((float flt) => {
             currentGridLoop.backgroundSpeed = flt;
+        });
+    }
+    private void StopCam(bool parched)
+    {
+        float speed = parched ? 2f : 0f;
+        Debug.LogWarning("PARCHED " + parched);
+        LeanTween.value(currentGridLoop.gameObject, cameraSpeed, 0f, speed).setEaseInOutQuad().setOnUpdate((float flt) => {
+            cameraSpeed = flt;
         });
     }
 

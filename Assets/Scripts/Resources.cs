@@ -6,7 +6,7 @@ using UnityEngine;
 public class Resources : MonoBehaviour
 {
     public static Resources Instance; //a static
-
+    public AudioClip thing;
     private int _health;// dont use
     private int _water; //dont use
 
@@ -84,6 +84,11 @@ public class Resources : MonoBehaviour
 
     void OnDeath(bool parched)
     {
+        GameManager.Instance.UpdateGameState(GameState.GameOver);
         StartCoroutine(GameManager.Instance.FadeInGameOver(parched));
+        GameManager.Instance.SetScoreValues();
+        Time.timeScale = 0.5f;  // :D
+        AudioSource.PlayClipAtPoint(thing, Camera.main.transform.position);
+
     }
 }
