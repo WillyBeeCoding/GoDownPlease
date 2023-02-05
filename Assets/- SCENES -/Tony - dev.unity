@@ -1411,6 +1411,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76dc22c53e50ba24eab9d8610cf32199, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hoverSound: {fileID: 0}
+  clickSound: {fileID: 0}
 --- !u!114 &116440407
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2038,6 +2040,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76dc22c53e50ba24eab9d8610cf32199, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hoverSound: {fileID: 0}
+  clickSound: {fileID: 0}
 --- !u!114 &355887285
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2582,6 +2586,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76dc22c53e50ba24eab9d8610cf32199, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hoverSound: {fileID: 0}
+  clickSound: {fileID: 0}
 --- !u!114 &585704488
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2999,6 +3005,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76dc22c53e50ba24eab9d8610cf32199, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hoverSound: {fileID: 0}
+  clickSound: {fileID: 0}
 --- !u!114 &617665606
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11764,6 +11772,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76dc22c53e50ba24eab9d8610cf32199, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hoverSound: {fileID: 0}
+  clickSound: {fileID: 0}
 --- !u!114 &1399402260
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14521,6 +14531,10 @@ MonoBehaviour:
   - {fileID: 577188946}
   - {fileID: 467447593}
   - {fileID: 437836884}
+  treeSprites:
+  - {fileID: 21300000, guid: 315dc26920bf3084686ae631534c115f, type: 3}
+  - {fileID: 21300000, guid: 32c5b1f15e0203941bd6d5e1d1c44c27, type: 3}
+  - {fileID: 21300000, guid: ea4a9fcab006d0a4d948c0a4bf141574, type: 3}
   currentLayer: {fileID: 0}
   currentScore: 0
   highScore: 0
@@ -14531,10 +14545,12 @@ MonoBehaviour:
   currentGridLoop: {fileID: 2035664749}
   mainCamera: {fileID: 519420028}
   resources: {fileID: 0}
+  woosh: {fileID: 0}
   gameStarted: 0
   cameraSpeed: 5
   maxCameraSpeed: 5
   layerThreshold: 200
+  musicTracks: []
 --- !u!4 &2078255047
 Transform:
   m_ObjectHideFlags: 0
