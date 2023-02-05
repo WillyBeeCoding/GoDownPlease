@@ -12,7 +12,7 @@ public class WaterContainer : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             GetComponent<PolygonCollider2D>().enabled = false;
-            AudioSource.PlayClipAtPoint(soundClip, Camera.main.transform.position);
+            AudioSource.PlayClipAtPoint(soundClip, Camera.main.transform.position, 0.2f);
             Resources.Instance.DrinkWater(waterAmount);
             Destroy(this.gameObject);
             

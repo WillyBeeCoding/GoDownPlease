@@ -9,7 +9,7 @@ public class Obstacle : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other) {
         if (other.CompareTag("Player")) {
-            AudioSource.PlayClipAtPoint(ouchieClip, Camera.main.transform.position);
+            AudioSource.PlayClipAtPoint(ouchieClip, Camera.main.transform.position, 0.2f);
             Resources.Instance.ApplyDamage(damage);
             GetComponent<PolygonCollider2D>().enabled = false;
 

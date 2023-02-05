@@ -44,9 +44,12 @@ public class GameManager : MonoBehaviour
 
     public GameObject mainCamera;
     public Resources resources;
+    public AudioClip woosh;
     public bool gameStarted;
     public float cameraSpeed;
     public float maxCameraSpeed;
+
+    public List<AudioSource> musicTracks;
 
     private void Awake()
     {
@@ -165,6 +168,10 @@ public class GameManager : MonoBehaviour
     private IEnumerator FadeInMenuAnim()
     {
         yield return new WaitForEndOfFrame();
+        LeanTween.value(gameObject, 0f, 0.1f, 2f).setEaseInQuad().setOnUpdate((float flt) => {
+            musicTracks[0].volume = flt;
+            musicTracks[1].volume = flt;
+        });
         LeanTween.alphaCanvas(startCanvas.GetComponent<CanvasGroup>(), 1f, 1.5f).setEaseInQuad();
         yield return new WaitForSeconds(1.5f);
         LeanTween.moveLocalY(mainMenuButtons, -240f, 0.5f).setEaseOutExpo();
@@ -177,7 +184,12 @@ public class GameManager : MonoBehaviour
         yield return new WaitForEndOfFrame();
         startCanvas.GetComponent<CanvasGroup>().blocksRaycasts = false;
         LeanTween.alphaCanvas(startCanvas.GetComponent<CanvasGroup>(), 0f, 1f);
+        LeanTween.value(gameObject, 0.1f, 0.02f, 1f).setOnUpdate((float flt) => {
+            musicTracks[0].volume = flt;
+            musicTracks[1].volume = flt;
+        });
         yield return new WaitForSeconds(1f);
+        AudioSource.PlayClipAtPoint(woosh, Camera.main.transform.position, 0.1f);
         LeanTween.moveLocalY(mainCamera, 0f, 1f).setEaseInOutQuad();
         LeanTween.value(mainCamera, mainCamera.GetComponent<Camera>().orthographicSize, 6f, 1f).setEaseInOutQuad().setOnUpdate((float flt) => {
             mainCamera.GetComponent<Camera>().orthographicSize = flt;
@@ -190,6 +202,15 @@ public class GameManager : MonoBehaviour
     private IEnumerator FadeInOverlayAnim()
     {
         yield return new WaitForEndOfFrame();
+
+        LeanTween.value(gameObject, musicTracks[0].volume, 0.1f, 2f).setEaseInQuad().setOnUpdate((float flt) => {
+            musicTracks[0].volume = flt;
+            musicTracks[1].volume = flt;
+        });
+
+        LeanTween.value(gameObject, 0f, 0.1f, 2f).setEaseInQuad().setOnUpdate((float flt) => {
+            musicTracks[2].volume = flt;
+        });
         
         // Fades in the Overlay Canvas
         LeanTween.alphaCanvas(overlayCanvas.GetComponent<CanvasGroup>(), 1f, 0.2f);
@@ -222,7 +243,16 @@ public class GameManager : MonoBehaviour
         yield return new WaitForEndOfFrame();
         StopGrid(parched);
         StopCam(parched);
-        LeanTween.alphaCanvas(blackScreenCanvas.GetComponent<CanvasGroup>(), 1f, 2f);//.setEaseInQuad();
+        LeanTween.alphaCanvas(blackScreenCanvas.GetComponent<CanvasGroup>(), 1f, 2f);
+
+        foreach (AudioSource s in musicTracks) {
+            if (s != null) {
+                LeanTween.value(s.gameObject, s.volume, 0f, 2f).setEaseInQuad().setOnUpdate((float flt) => {
+                    s.volume = flt;
+                });
+            }
+        }
+        
         yield return new WaitForSeconds(2f);
 
         GameObject[] waters = GameObject.FindGameObjectsWithTag("Water Container");
@@ -232,6 +262,11 @@ public class GameManager : MonoBehaviour
         GameObject[] obstacles = GameObject.FindGameObjectsWithTag("Obstacle");
         foreach (GameObject o in obstacles)
             { Destroy(o); }
+
+        LeanTween.value(gameObject, musicTracks[0].volume, 0.1f, 2f).setEaseInQuad().setOnUpdate((float flt) => {
+            musicTracks[0].volume = flt;
+            musicTracks[1].volume = flt;
+        });
             
         Time.timeScale = 1f;
         currentGridLoop.ResetPosition();
@@ -260,6 +295,10 @@ public class GameManager : MonoBehaviour
         yield return new WaitForEndOfFrame();
         LeanTween.alphaCanvas(blackScreenCanvas.GetComponent<CanvasGroup>(), 1f, 2f);
         gameOverCanvas.GetComponent<CanvasGroup>().blocksRaycasts = false;
+        LeanTween.value(gameObject, musicTracks[0].volume, 0f, 2f).setEaseInQuad().setOnUpdate((float flt) => {
+            musicTracks[0].volume = flt;
+            musicTracks[1].volume = flt;
+        });
         yield return new WaitForSeconds(2f);
 
         gameObject.BroadcastMessage("ResetGame");

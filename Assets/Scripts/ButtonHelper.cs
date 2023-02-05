@@ -9,6 +9,8 @@ public class ButtonHelper : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 {
 
     private GameObject text;
+    public AudioClip hoverSound;
+    public AudioClip clickSound;
     
     void Start()
     {
@@ -17,6 +19,7 @@ public class ButtonHelper : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
     public void OnPointerEnter(PointerEventData pointerEventData)
     {
+        AudioSource.PlayClipAtPoint(hoverSound, Camera.main.transform.position, 0.1f);
         text.transform.localPosition = new Vector3(0f, -4f, 0f);
     }
 
@@ -27,6 +30,7 @@ public class ButtonHelper : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
     public void OnPointerDown(PointerEventData pointerEventData)
     {
+        AudioSource.PlayClipAtPoint(clickSound, Camera.main.transform.position, 0.1f);
         text.transform.localPosition = new Vector3(0f, -8f, 0f);
     }
 
