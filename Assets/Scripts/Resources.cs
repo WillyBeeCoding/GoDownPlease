@@ -7,26 +7,15 @@ public class Resources : MonoBehaviour
 {
     public static Resources Instance; //a static
 
-    //Update the UI whenever health is set
-    public int _health;// dont use
-    public int Health { 
-        get { return _health; }
-        set{
-            _health = Mathf.Clamp(value, 0, 3);
-            GameManager.Instance.AdjustHealthUI();
-        }
-    }
 
-    //Update the UI whenever water is set
-    public int _water; //dont use
-    public int Water{
-        get { return _water; }
-        set{
-            _water = Mathf.Clamp(value, 0, waterMax);
-            GameManager.Instance.AdjustWaterUI();
-        }
-    }
+    private int _health;// dont use
+    private int _water; //dont use
 
+    // Health-related stats
+    public int healthMax = 3;
+    public float stunDuration  = 2;
+
+    // Water-related stats
     public int waterMax = 100;
     private int waterLow;
     [Tooltip ("How much water is lost per timer tick")]
@@ -34,74 +23,68 @@ public class Resources : MonoBehaviour
     [Tooltip ("How often water is lost in seconds")]
     public float waterLossTime = 0.33f;
     public float parchedPercent = 0f;
-    public float stunDuration  = 2;
 
-    private void Awake()
-    {
-        Instance = this;
+    //Update the UI whenever health is set
+    public int Health { 
+        get { return _health; }
+        set {
+            _health = Mathf.Clamp(value, 0, 3);
+            GameManager.Instance.AdjustHealthUI();
+        }
     }
-    // Start is called before the first frame update
-    void Start()
-    {
+
+    //Update the UI whenever water is set
+
+    public int Water {
+        get { return _water; }
+        set {
+            _water = Mathf.Clamp(value, 0, waterMax);
+            GameManager.Instance.AdjustWaterUI();
+        }
+    }
+
+    private void Awake() => Instance = this;
+    
+    void Start() {
         Water = waterMax;
-        Health = GameManager.Instance.lives;
+        Health = healthMax;
         waterLow = waterMax / 2;
-        
     }
 
-    private void FixedUpdate()
-    {
-        if (GameManager.Instance.CompareState(GameState.Gameplay))
-        {
+    private void FixedUpdate() {
+        if (GameManager.Instance.CompareState(GameState.Gameplay)) {
             //Drink water
-            if (!IsInvoking(nameof(MakeThirsty)))
-            {
+            if (!IsInvoking(nameof(MakeThirsty))) {
                 Invoke(nameof(MakeThirsty), waterLossTime);
-                GetParchedAmount();                            
+                GetParchedAmount();
             }
         }
     }
 
-    public float GetParchedAmount()
-    {
-        if (Water <= waterMax / 2)
-        {
-            parchedPercent = Mathf.Clamp01(1 - ((float)Water / (waterMax / 2)));
-            Debug.Log("Parched amount: " + parchedPercent);            
-        }
+    public float GetParchedAmount() {
+        parchedPercent = Mathf.Clamp01(1 - ((float)Water / waterLow));
+        //Debug.Log("Parched amount: " + parchedPercent*100f + "%");
         return parchedPercent;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-    public void DrinkWater(int amount)
-    {
+    public void DrinkWater(int amount) {
         Water += amount;
-        //GameManager.Instance.AdjustWaterUI;
     }
     
-    public void MakeThirsty()
-    {
-        Mathf.Clamp(Water -= waterLoss,0,waterMax);
+    public void MakeThirsty() {
+        Mathf.Clamp(Water -= waterLoss, 0, waterMax);
         Debug.Log("Water: " + Water);
-        if(Water <= 0) {
-            OnDeath();
-        }
+        if (Water <= 0) { OnDeath(true); }
     }
-    public void ApplyDamage(int damage)
-    {
-        Health -= damage;
-        if (Health <= 0)
-        {
-            OnDeath();
-        }
+
+    public void ApplyDamage(int damage) {
+        Mathf.Clamp(Health -= damage, 0, healthMax);
+        Debug.Log("Health: " + Health);
+        if (Health <= 0) { OnDeath(false); }
     }
-    void OnDeath()
+    
+    void OnDeath(bool parched)
     {
-        StartCoroutine(GameManager.Instance.FadeInGameOver());
-        Debug.Break();
+        StartCoroutine(GameManager.Instance.FadeInGameOver(parched));
     }
 }
