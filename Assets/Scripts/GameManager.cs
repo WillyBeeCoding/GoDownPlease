@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
     public GameState gameState;
     public GameObject playerRoot;
     public List<GameObject> depthLayers;
+    public List<Sprite> treeSprites;
     public GridLooper currentLayer;
 
     public float currentScore;
@@ -87,7 +88,6 @@ public class GameManager : MonoBehaviour
     public void UpdateGameState(int state) {
         UpdateGameState((GameState) state);
     }
-
     public void UpdateGameState(GameState state)
     {
         Instance.gameState = state;
@@ -114,6 +114,7 @@ public class GameManager : MonoBehaviour
     }
     private void BeginGamePlay()
     {
+
         SpawnPlayer(new Vector2(0, 0), true);
         currentScore = 0;
         scoreDelta = 0;
@@ -129,14 +130,20 @@ public class GameManager : MonoBehaviour
         }
         return temp;
     }
-    
+
+    // private GameObject SpawnPlayerWithForce(Vector2 pos, Vector2 dir, float mag) //Unused ATM
+    // {
+    //     GameObject temp = SpawnPlayer(pos, true);
+    //     temp.GetComponent<Rigidbody2D>().AddForce(dir * mag);
+    //     return temp;
+    // }
+
     public void SetScoreValues()
     {
         highScore = currentScore > highScore ? (int)currentScore : highScore;
         GameObject.Find("High Score Value").GetComponent<TextMeshProUGUI>().text = (highScore).ToString();
         GameObject.Find("Player Score Value").GetComponent<TextMeshProUGUI>().text = ((int)currentScore).ToString();
     }
-
     public void CheckDepthLayer()
     {
 
@@ -170,6 +177,7 @@ public class GameManager : MonoBehaviour
                 }
                 depthLayers[Mathf.Clamp(curLayer - 1, 0, depthLayers.Count-1)].GetComponent<GridLooper>().panUp = true;
                 scoreDelta -= layerThreshold;
+                GameObject.Find("Plant").GetComponent<SpriteRenderer>().sprite = treeSprites[Math.Clamp(curLayer, 0, 3)];
             }
         }
     }
@@ -182,43 +190,36 @@ public class GameManager : MonoBehaviour
             layer.panUp = panActive;
         }
     }
-
     public void AdjustWaterUI() {
         if (GameManager.Instance.gameState == GameState.Gameplay) {
             float position = -146f * (1f - (Resources.Instance.Water / 100f));
             LeanTween.moveLocalX(waterGauge, position, 0.5f).setEaseOutQuad();
         }
     }
-
     public void AdjustHealthUI() {
         if (GameManager.Instance.gameState == GameState.Gameplay) {
             float position = -146f * (1f - (Resources.Instance.Health / 3f));
             LeanTween.moveLocalX(healthGauge, position, 0.5f).setEaseOutQuad();
         }
     }
-
     //a quicker way to check if we are in a state instead of using actions.
     //If you want to use actions then change this up.
     public bool CompareState(GameState check)
     {
         return check == Instance.gameState;
     }
-
     public void FadeInMenu()
     {
         StartCoroutine(FadeInMenuAnim());
     }
-
     public void FadeOutMenu()
     {
         StartCoroutine(FadeOutMenuAnim());
     }
-
     public void FadeOutGameOver()
     {
         StartCoroutine(FadeOutGameOverAnim());
     }
-
     private IEnumerator FadeInMenuAnim()
     {
         yield return new WaitForEndOfFrame();
@@ -232,7 +233,6 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         startCanvas.GetComponent<CanvasGroup>().blocksRaycasts = true;
     }
-
     private IEnumerator FadeOutMenuAnim()
     {
         yield return new WaitForEndOfFrame();
@@ -252,7 +252,6 @@ public class GameManager : MonoBehaviour
         StartCoroutine(FadeInOverlayAnim());
         // UpdateGameState(GameState.Gameplay);
     }
-
     private IEnumerator FadeInOverlayAnim()
     {
         yield return new WaitForEndOfFrame();
@@ -291,7 +290,6 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
         UpdateGameState(GameState.Gameplay);
     }
-
     public IEnumerator FadeInGameOverAnim(bool parched)
     {
         yield return new WaitForEndOfFrame();
@@ -335,15 +333,13 @@ public class GameManager : MonoBehaviour
         LeanTween.moveLocalY(gameOverButtons, -240f, 0.5f).setEaseOutExpo();
         yield return new WaitForSeconds(0.5f);
         gameOverCanvas.GetComponent<CanvasGroup>().blocksRaycasts = true;
-    }
-    
+    }  
     private void StartCam()
     {
         LeanTween.value(gameObject, 0f, maxCameraSpeed, 5f).setEaseInOutQuad().setOnUpdate((float flt) => {
             cameraSpeed = flt;
         });
     }
-
     private IEnumerator FadeOutGameOverAnim()
     {
         yield return new WaitForEndOfFrame();
@@ -361,13 +357,11 @@ public class GameManager : MonoBehaviour
         LeanTween.alphaCanvas(blackScreenCanvas.GetComponent<CanvasGroup>(), 0f, 2f);
         StartCoroutine(FadeInOverlayAnim());
     }
-
     private void StartGrid() {
         LeanTween.value(currentGridLoop.gameObject, 0f, maxCameraSpeed , 5f).setEaseInOutQuad().setOnUpdate((float flt) => {
             currentGridLoop.backgroundSpeed = flt;
         });
     }
-
     private void StopGrid(bool parched) {
         float speed = parched ? 2f : 0f;
         //Debug.LogWarning("PARCHED " + parched);
@@ -383,7 +377,6 @@ public class GameManager : MonoBehaviour
             cameraSpeed = flt;
         });
     }
-
     private void FindUIAssets() {
         mainMenuButtons = GameObject.Find("Main Menu Buttons");
         dividingBar = GameObject.Find("Dividing Bar");
@@ -397,9 +390,9 @@ public class GameManager : MonoBehaviour
         highScoreDisp = GameObject.Find("High Score Display");
         gameOverButtons = GameObject.Find("Game Over Buttons");
     }
-
     public void ResetGame() {
         currentScore = 0;
+        GameObject.Find("Plant").GetComponent<SpriteRenderer>().sprite = treeSprites[0];
         overlayCanvas.GetComponentInChildren<TextMeshProUGUI>().text = ((int)currentScore).ToString();
 
         gameObject.transform.position = new Vector3(0,0,0);
