@@ -14732,7 +14732,7 @@ MonoBehaviour:
   gameStarted: 0
   cameraSpeed: 0
   maxCameraSpeed: 5
-  layerThreshold: 1000
+  layerThreshold: 100
   musicTracks:
   - {fileID: 2078255053}
   - {fileID: 2078255060}
