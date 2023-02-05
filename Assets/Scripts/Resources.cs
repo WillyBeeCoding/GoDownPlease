@@ -72,13 +72,13 @@ public class Resources : MonoBehaviour
     
     public void MakeThirsty() {
         Mathf.Clamp(Water -= waterLoss, 0, waterMax);
-        Debug.Log("Water: " + Water);
+        //Debug.Log("Water: " + Water);
         if (Water <= 0) { OnDeath(true); }
     }
 
     public void ApplyDamage(int damage) {
         Mathf.Clamp(Health -= damage, 0, healthMax);
-        Debug.Log("Health: " + Health);
+        //Debug.Log("Health: " + Health);
         if (Health <= 0) { OnDeath(false); }
     }
 
