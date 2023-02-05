@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 1
-  ouchieClip: {fileID: 8300000, guid: 34d7d6d2a05889f4285ac70ba6d34371, type: 3}
+  ouchieClip: {fileID: 8300000, guid: 0340add8e093be9478ea4b9a492c2b56, type: 3}
 --- !u!212 &4192630361159690388
 SpriteRenderer:
   m_ObjectHideFlags: 0
