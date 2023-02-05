@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public enum GameState
 {
@@ -65,6 +66,8 @@ public class GameManager : MonoBehaviour
         if (CompareState(GameState.Gameplay))
         {
             transform.position += new Vector3(0, -cameraSpeed * Time.deltaTime, 0);
+            currentScore = (int)(Time.time * 3.3f);
+            overlayCanvas.GetComponentInChildren<TextMeshProUGUI>().text = currentScore.ToString();
         }
     }
 

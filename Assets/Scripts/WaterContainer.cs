@@ -4,17 +4,18 @@ using UnityEngine;
 
 public class WaterContainer : MonoBehaviour
 {
-    int waterAmount;
+    int waterAmount = 45;
+    public AudioClip soundClip;
 
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
         {
-            //AudioSource.PlayClipAtPoint(ouchieClip, Camera.main.transform.position);
-            Resources.Instance.ApplyDamage(waterAmount);
             GetComponent<PolygonCollider2D>().enabled = false;
+            AudioSource.PlayClipAtPoint(soundClip, Camera.main.transform.position);
+            Resources.Instance.DrinkWater(waterAmount);
             Destroy(this.gameObject);
-
+            
         }
         else if (other.CompareTag("Border"))
         {
